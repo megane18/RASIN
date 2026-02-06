@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Haitian Influence Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="flag-accent"></div>
+        <div class="brand-text">Haitian Influence Tracker</div>
+      </div>
+
+      <nav class="nav">
+        <button class="navbtn" data-route="home">Archive</button>
+        <button class="navbtn" data-route="news">News</button>
+        <button class="navbtn" data-route="trending">Trending</button>
+        <button class="navbtn submit-btn" data-route="submit">Submit a Lead</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- HOME -->
+    <section id="view-home" class="view">
+      <section class="hero-banner">
+        <div class="hero-content">
+          <div class="hero-badge">🇭🇹 Cultural Heritage Tracker</div>
+          <h1 class="hero-title">Tracking Haitian Influence<br>Around the World</h1>
+          <p class="hero-desc">Explore how Haitian culture, history, and diaspora shape global<br>arts, music, language, and beyond.</p>
+          <button class="btn-hero" data-route="archive">Browse the Archive →</button>
+        </div>
+        <div class="hero-visual">
+          <div class="visual-card"></div>
+        </div>
+      </section>
+
+      <div class="home-layout">
+        <aside class="sidebar">
+          <article class="panel news-panel">
+            <div class="panel-head">
+              <h2>Latest News</h2>
+            </div>
+            <ul class="news-list" id="news-list"></ul>
+            <button class="link-arrow" data-route="archive">Browse the Archive →</button>
+          </article>
+
+          <article class="panel trending-panel">
+            <div class="panel-head">
+              <h2>Trending Topics</h2>
+            </div>
+            <div class="topic-pills" id="trending-pills"></div>
+          </article>
+        </aside>
+
+        <main class="main-content">
+          <div class="featured-grid" id="featured-grid"></div>
+        </main>
+      </div>
+    </section>
+
+    <!-- SUBMIT -->
+    <section id="view-submit" class="view hidden">
+      <div class="submit-wrapper">
+        <div class="submit-hero">
+          <h1>Submit a Lead</h1>
+          <p class="subtitle">Share a tip on Haitian influence!</p>
+        </div>
+
+        <div class="submit-grid">
+          <form id="submitForm" class="submit-form">
+            <div class="form-group">
+              <h3 class="form-section-title">Link or Upload</h3>
+              <div class="button-row">
+                <button type="button" class="btn-icon" id="addLinkBtn">
+                  <span class="icon">🔗</span> Add Link
+                </button>
+                <button type="button" class="btn-icon outline" id="uploadBtn">
+                  <span class="icon">📁</span> Upload File
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="subClaim">Your Claim</label>
+              <textarea id="subClaim" name="claim" rows="5" placeholder="What's Haitian here? Tell us why you think it's connected to Haiti..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="subCategory">Category</label>
+              <select id="subCategory" name="category" required>
+                <option value="Music">Music</option>
+                <option>Food</option>
+                <option>Language</option>
+                <option>History</option>
+                <option>Diaspora</option>
+                <option>Religion / Spirituality</option>
+                <option>Art</option>
+                <option>Fashion</option>
+                <option>Architecture</option>
+                <option>Politics</option>
+                <option>Sports</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Confidence Level</label>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input type="radio" name="confidence" value="Not sure" checked>
+                  <span class="radio-label">⚪ I'm Not Sure</span>
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="confidence" value="Certain">
+                  <span class="radio-label">⚫ I'm Certain</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="subLocation">Location (Optional)</label>
+                <input id="subLocation" name="location" type="text" placeholder="e.g., New Orleans, LA" />
+              </div>
+              <div class="form-group">
+                <label for="subPeriod">Time Period (Optional)</label>
+                <input id="subPeriod" name="period" type="text" placeholder="e.g., 1920s-1940s" />
+              </div>
+            </div>
+
+            <button class="btn-submit" type="submit">Submit Tip</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHIVE -->
+    <section id="view-archive" class="view hidden">
+      <div class="archive-wrapper">
+        <div class="archive-hero">
+          <h1>Haitian Influence Archive</h1>
+        </div>
+
+        <div class="filter-bar">
+          <select id="archiveCategory" class="filter-dropdown">
+            <option value="All">All Categories</option>
+          </select>
+          <select id="archiveFilter" class="filter-dropdown">
+            <option value="All">Filter: Kompa Music</option>
+          </select>
+          <div class="search-input">
+            <span class="search-icon">🔍</span>
+            <input id="archiveSearch" type="search" placeholder="Search the Archive..." />
+          </div>
+        </div>
+
+        <div class="archive-entries" id="archiveGrid"></div>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section id="view-admin" class="view hidden">
+      <div class="pagehead">
+        <div>
+          <h2>Admin</h2>
+          <p class="muted">Unlock; review pending; approve to publish.</p>
+        </div>
+      </div>
+
+      <article class="tile" id="admin-lock-card">
+        <div class="tile-head">
+          <div class="tile-title">Unlock</div>
+          <div class="tile-sub">Demo password: <span class="mono">haiti</span></div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="adminPass">Admin password</label>
+            <input id="adminPass" type="password" />
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button class="btn primary" id="adminUnlockBtn">Unlock</button>
+          </div>
+        </div>
+
+        <div class="hint">Demo only; replace with real auth later.</div>
+      </article>
+
+      <article class="tile hidden" id="admin-panel">
+        <div class="tile-head">
+          <div class="tile-title">Pending Queue</div>
+          <div class="tile-sub">Approve publishes; reject removes</div>
+        </div>
+        <div id="adminQueue"></div>
+      </article>
+    </section>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal hidden" id="modal">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="modalTitle"></div>
+          <div class="modal-sub" id="modalSub"></div>
+        </div>
+        <button class="iconbtn" id="modalCloseBtn">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-foot" id="modalFoot"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="muted">Haitian Influence Tracker; demo MVP.</div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
