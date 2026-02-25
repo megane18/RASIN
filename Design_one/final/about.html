@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Rasin Archive</title>
+    <meta name="description" content="Learn about Rasin Archive's mission to document and preserve Haitian cultural influence worldwide.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --ink: #0f0d0a; --paper: #f5f0e8; --warm-white: #faf8f3;
+            --gold: #c9922a; --gold-light: #e8b84b; --red: #b83232;
+            --indigo: #1a1f3a; --muted: #7a6f5f; --border: #d9d0be; --border-light: #ece5d6;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Instrument Sans', sans-serif; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.6; }
+
+        /* HEADER */
+        header { background: var(--indigo); color: var(--paper); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .logo-group { display: flex; align-items: baseline; gap: 1rem; }
+        .logo-link { text-decoration: none; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; letter-spacing: 0.25em; color: var(--gold-light); text-transform: uppercase; }
+        .logo span { color: var(--red); }
+        .tagline-header { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: rgba(245,240,232,0.4); letter-spacing: 0.12em; text-transform: uppercase; border-left: 1px solid rgba(245,240,232,0.2); padding-left: 1rem; }
+        nav { display: flex; gap: 0.25rem; }
+        nav a { color: rgba(245,240,232,0.7); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.9rem; border-radius: 2px; transition: color 0.2s, background 0.2s; }
+        nav a:hover, nav a.active { color: var(--gold-light); background: rgba(201,146,42,0.12); }
+
+        /* PAGE HERO */
+        .page-hero { background: var(--indigo); color: var(--paper); padding: 4rem 2rem 3.5rem; text-align: center; position: relative; }
+        .page-hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+        .page-hero-flag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+        .page-hero h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 300; }
+        .page-hero p { font-size: 1rem; color: rgba(245,240,232,0.65); max-width: 560px; margin: 1rem auto 0; line-height: 1.75; }
+
+        /* LAYOUT */
+        .about-body { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; }
+
+        /* SECTION */
+        .about-section { margin-bottom: 3.5rem; }
+        .section-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .about-section h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 600; margin-bottom: 1.25rem; line-height: 1.2; }
+        .about-section p { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; font-size: 0.95rem; }
+
+        /* LIST */
+        .about-list { list-style: none; margin: 1.25rem 0; display: flex; flex-direction: column; gap: 0.6rem; }
+        .about-list li { padding: 0.75rem 1rem; background: var(--warm-white); border-left: 2px solid var(--gold); font-size: 0.9rem; color: var(--muted); }
+        .about-list li strong { color: var(--ink); }
+
+        /* PROCESS STEPS */
+        .process-steps { display: flex; flex-direction: column; gap: 0; }
+        .process-step { display: flex; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border-light); }
+        .process-step:last-child { border-bottom: none; }
+        .step-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 700; color: var(--gold); line-height: 1; width: 48px; flex-shrink: 0; padding-top: 0.15rem; }
+        .step-content h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .step-content p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; margin: 0; }
+
+        /* STANDARDS BOXES */
+        .standards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 1.25rem; }
+        .standards-box { background: var(--warm-white); padding: 1.5rem; }
+        .standards-box h4 { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+        .standards-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .standards-box li { font-size: 0.85rem; color: var(--muted); padding-left: 1rem; position: relative; line-height: 1.5; }
+        .standards-box li::before { content: '—'; position: absolute; left: 0; color: var(--gold); }
+
+        /* INVOLVEMENT GRID */
+        .involvement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 1.25rem; }
+        .involvement-card { background: var(--warm-white); padding: 1.5rem; }
+        .involvement-icon { font-size: 1.4rem; margin-bottom: 0.75rem; }
+        .involvement-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .involvement-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+        .involvement-link { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 1px; transition: color 0.2s; }
+        .involvement-link:hover { color: var(--ink); border-color: var(--ink); }
+
+        /* PRINCIPLES */
+        .principles { display: flex; flex-direction: column; gap: 0; }
+        .principle { padding: 1.25rem 0; border-bottom: 1px solid var(--border-light); display: flex; gap: 1.5rem; align-items: flex-start; }
+        .principle:last-child { border-bottom: none; }
+        .principle-marker { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; width: 100px; flex-shrink: 0; padding-top: 0.2rem; }
+        .principle-text h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .principle-text p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; margin: 0; }
+
+        /* CONTACT BOX */
+        .contact-box { background: var(--indigo); color: var(--paper); padding: 2rem; margin-top: 1.25rem; }
+        .contact-box p { color: rgba(245,240,232,0.6); font-size: 0.88rem; margin-bottom: 0.4rem; }
+        .contact-email { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem !important; color: var(--gold-light) !important; margin: 0.75rem 0 !important; }
+        .contact-note { font-family: 'DM Mono', monospace; font-size: 0.62rem !important; letter-spacing: 0.08em; color: rgba(245,240,232,0.35) !important; margin: 0 !important; }
+
+        /* FOOTER */
+        footer { background: var(--indigo); color: rgba(245,240,232,0.45); padding: 2.5rem 2rem; margin-top: 4rem; text-align: center; border-top: 1px solid var(--gold); }
+        footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; }
+        footer p + p { margin-top: 0.4rem; }
+
+        @media (max-width: 700px) {
+            .standards-grid, .involvement-grid { grid-template-columns: 1fr; }
+            .tagline-header { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="logo-group">
+            <a href="index.html" class="logo-link">
+                <div class="logo">HT <span>RASIN</span></div>
+            </a>
+            <span class="tagline-header">Haitian Cultural Influence Archive</span>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="browse.html">Browse</a>
+            <a href="about.html" class="active">About</a>
+            <a href="submit.html">Submit</a>
+        </nav>
+    </div>
+</header>
+
+<section class="page-hero">
+    <div class="page-hero-flag">Mission & Methodology</div>
+    <h2>About Rasin Archive</h2>
+    <p>Rasin (meaning "roots" in Haitian Creole) is a community-driven platform dedicated to documenting and preserving Haitian cultural influence worldwide.</p>
+</section>
+
+<div class="about-body">
+
+    <section class="about-section">
+        <div class="section-label">The Work</div>
+        <h3>Why We Exist</h3>
+        <p>From revolutionary movements to musical innovations, from culinary traditions to artistic expressions, Haiti's contributions have shaped global culture in profound ways. Yet these contributions are often overlooked, misattributed, or erased from historical narratives.</p>
+        <p>We exist to counter cultural erasure by creating a comprehensive, well-sourced archive of Haitian influence across all domains of human culture.</p>
+    </section>
+
+    <section class="about-section">
+        <div class="section-label">Our Mission</div>
+        <h3>Every Documented Influence Is</h3>
+        <ul class="about-list">
+            <li><strong>Community-Sourced:</strong> Submitted by people who care about preserving Haitian heritage</li>
+            <li><strong>Thoroughly Documented:</strong> Backed by multiple credible sources and evidence</li>
+            <li><strong>Reviewed for Accuracy:</strong> Verified by our team before publication</li>
+            <li><strong>Freely Accessible:</strong> Available to educators, researchers, and the public</li>
+        </ul>
+    </section>
+
+    <section class="about-section">
+        <div class="section-label">Why This Matters</div>
+        <h3>Cultural Erasure Is Not Accidental</h3>
+        <p>It's a pattern that affects how history is told, who gets credit for innovations, and which communities are seen as contributors versus recipients in global culture.</p>
+        <p>When zouk is presented as purely Guadeloupean without acknowledging its Haitian roots, when the Haitian Revolution's influence on abolition is minimized, when Haitian artistic movements go unrecognized—these aren't just historical oversights. They're ongoing erasures that affect how Haiti and Haitians are perceived today.</p>
+        <p>By documenting these influences with rigorous evidence, we aim to correct the record and ensure that Haiti's cultural contributions are recognized and celebrated.</p>
+    </section>
+
+    <section class="about-section">
+        <div class="section-label">Process</div>
+        <h3>How It Works</h3>
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h4>Community Submission</h4>
+                    <p>Anyone can submit a documented influence through our form. We ask for the influence itself, timeline, geographic spread, and credible sources.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h4>Review Process</h4>
+                    <p>Our team reviews each submission for accuracy, completeness, and source credibility. We verify that claims are well-supported and sources are legitimate.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h4>Publication & Attribution</h4>
+                    <p>Approved influences are published with full source citations and contributor credit. Each entry includes documentation of how the influence spread and evolved.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h4>Ongoing Updates</h4>
+                    <p>As new research emerges or additional sources are found, entries can be updated to reflect the most current understanding.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-label">Standards</div>
+        <h3>Our Documentation Standards</h3>
+        <p>We maintain high standards to ensure the archive's credibility as a resource for educators and researchers.</p>
+        <div class="standards-grid">
+            <div class="standards-box">
+                <h4>Source Requirements</h4>
+                <ul>
+                    <li>Minimum 2 credible sources from different categories</li>
+                    <li>Preference for primary sources (recordings, documents, interviews)</li>
+                    <li>Academic sources must be peer-reviewed or from reputable institutions</li>
+                    <li>Oral histories are valued, especially from community members</li>
+                </ul>
+            </div>
+            <div class="standards-box">
+                <h4>Documentation Requirements</h4>
+                <ul>
+                    <li>Clear demonstration of lineage (how influence spread)</li>
+                    <li>Timeline showing when and where influence occurred</li>
+                    <li>Geographic flow tracking cultural movement</li>
+                    <li>Context about why the influence matters</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-label">Get Involved</div>
+        <h3>Join the Archive</h3>
+        <p>Rasin Archive is a community effort. Here's how you can contribute:</p>
+        <div class="involvement-grid">
+            <div class="involvement-card">
+                <div class="involvement-icon">◆</div>
+                <h4>Submit an Influence</h4>
+                <p>Know about a Haitian cultural contribution that should be documented? Share it with sources and help us build the archive.</p>
+                <a href="submit.html" class="involvement-link">Submit Now →</a>
+            </div>
+            <div class="involvement-card">
+                <div class="involvement-icon">◎</div>
+                <h4>Add Sources</h4>
+                <p>Found additional sources for existing influences? Help us strengthen documentation by sharing them.</p>
+                <a href="submit.html" class="involvement-link">Contribute →</a>
+            </div>
+            <div class="involvement-card">
+                <div class="involvement-icon">◇</div>
+                <h4>Share</h4>
+                <p>Help spread awareness about Haitian cultural contributions by sharing influences with your networks.</p>
+                <a href="index.html" class="involvement-link">Browse & Share →</a>
+            </div>
+            <div class="involvement-card">
+                <div class="involvement-icon">✦</div>
+                <h4>Provide Feedback</h4>
+                <p>See something that needs correction? Have suggestions for improvement? Let us know.</p>
+                <a href="#contact" class="involvement-link">Contact Us →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-label">Principles</div>
+        <h3>What Guides Us</h3>
+        <div class="principles">
+            <div class="principle">
+                <div class="principle-marker">Evidence-Based</div>
+                <div class="principle-text">
+                    <h4>Every claim must be sourced</h4>
+                    <p>We don't publish speculation or assumptions. All influences must be backed by credible, verifiable evidence.</p>
+                </div>
+            </div>
+            <div class="principle">
+                <div class="principle-marker">Community-Centered</div>
+                <div class="principle-text">
+                    <h4>Haitian voices come first</h4>
+                    <p>Family accounts and community knowledge are valued alongside academic sources. Who tells the story matters.</p>
+                </div>
+            </div>
+            <div class="principle">
+                <div class="principle-marker">Transparent</div>
+                <div class="principle-text">
+                    <h4>All sources are cited</h4>
+                    <p>Contributors are credited. The review process is clear. We operate openly and with accountability.</p>
+                </div>
+            </div>
+            <div class="principle">
+                <div class="principle-marker">Respectful</div>
+                <div class="principle-text">
+                    <h4>Culture is complex, not simple copying</h4>
+                    <p>We approach this work with deep respect for Haitian culture and recognition of the nuanced ways influence travels across borders.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section" id="contact">
+        <div class="section-label">Contact</div>
+        <h3>Get In Touch</h3>
+        <p>Have questions, suggestions, or want to report an error? We'd love to hear from you.</p>
+        <div class="contact-box">
+            <p>For general inquiries and submissions:</p>
+            <p class="contact-email">contact@rasinarchive.org</p>
+            <p class="contact-note">We typically respond within 7–10 business days.</p>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Rasin Archive — Preserving Haiti's cultural contributions to the world.</p>
+    <p>Built with respect for Haitian culture and community.</p>
+</footer>
+
+</body>
+</html>
