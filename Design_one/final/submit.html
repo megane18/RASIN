@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit an Influence — Rasin Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --ink: #0f0d0a; --paper: #f5f0e8; --warm-white: #faf8f3;
+            --gold: #c9922a; --gold-light: #e8b84b; --red: #b83232;
+            --indigo: #1a1f3a; --muted: #7a6f5f; --border: #d9d0be; --border-light: #ece5d6;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Instrument Sans', sans-serif; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.6; }
+
+        /* ---- HEADER ---- */
+        header { background: var(--indigo); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .logo-group { display: flex; align-items: baseline; gap: 1rem; }
+        .logo-link { text-decoration: none; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; letter-spacing: 0.25em; color: var(--gold-light); text-transform: uppercase; }
+        .logo span { color: var(--red); }
+        .tagline-header { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: rgba(245,240,232,0.4); letter-spacing: 0.12em; text-transform: uppercase; border-left: 1px solid rgba(245,240,232,0.2); padding-left: 1rem; }
+        nav { display: flex; gap: 0.25rem; }
+        nav a { color: rgba(245,240,232,0.7); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.9rem; border-radius: 2px; transition: color 0.2s, background 0.2s; }
+        nav a:hover, nav a.active { color: var(--gold-light); background: rgba(201,146,42,0.12); }
+
+        /* ---- PAGE HERO ---- */
+        .page-hero { background: var(--indigo); color: var(--paper); padding: 3.5rem 2rem 3rem; text-align: center; position: relative; }
+        .page-hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+        .page-hero-flag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+        .page-hero h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; }
+        .page-hero p { font-size: 0.95rem; color: rgba(245,240,232,0.55); max-width: 500px; margin: 0.75rem auto 0; line-height: 1.7; }
+
+        /* ---- STEP PROGRESS BAR ---- */
+        .progress-bar {
+            background: var(--warm-white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 64px;
+            z-index: 90;
+        }
+        .progress-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: stretch;
+        }
+        .step-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 0.5rem;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+            color: var(--muted);
+        }
+        .step-tab.active { border-bottom-color: var(--gold); color: var(--ink); }
+        .step-tab.completed { color: var(--ink); }
+        .step-num {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--muted);
+            flex-shrink: 0;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .step-tab.active .step-num { background: var(--gold); border-color: var(--gold); color: #fff; }
+        .step-tab.completed .step-num { background: var(--indigo); border-color: var(--indigo); color: #fff; }
+        .step-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        .step-divider { width: 1px; background: var(--border-light); margin: 0.6rem 0; }
+
+        /* ---- FORM SHELL ---- */
+        .form-shell { max-width: 860px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+        /* ---- STEP PANELS ---- */
+        .step-panel { display: none; padding-top: 2.5rem; }
+        .step-panel.active { display: block; }
+
+        .step-header { margin-bottom: 2rem; }
+        .step-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; margin-bottom: 0.35rem; }
+        .step-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+        /* ---- TIPS BOX ---- */
+        .tips-box { background: var(--indigo); color: var(--paper); padding: 1.5rem 1.75rem; margin-bottom: 2rem; border-left: 3px solid var(--gold); }
+        .tips-box-title { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+        .tips-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+        .tips-list li { font-size: 0.85rem; color: rgba(245,240,232,0.7); padding-left: 1.1rem; position: relative; line-height: 1.5; }
+        .tips-list li::before { content: '→'; position: absolute; left: 0; color: var(--gold); }
+        .tips-list strong { color: var(--paper); }
+
+        /* ---- FIELD GROUPS ---- */
+        .field-row { display: flex; gap: 1.25rem; margin-bottom: 1.25rem; }
+        .field-row > * { flex: 1; margin-bottom: 0 !important; }
+        .field-row > *.wide { flex: 2; }
+
+        .form-group { margin-bottom: 1.25rem; }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.45rem;
+        }
+        .required { color: var(--red); font-size: 0.75rem; }
+        .lbl-optional {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.06em;
+            color: var(--border);
+            text-transform: uppercase;
+            margin-left: auto;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            padding: 0.7rem 0.9rem;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+            appearance: none;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--gold); background: #fff; }
+        textarea { resize: vertical; }
+        .help-text { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.04em; margin-top: 0.35rem; line-height: 1.5; }
+
+        /* ---- CATEGORY PICKER (visual grid instead of dropdown) ---- */
+        .cat-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+        .cat-option { display: none; }
+        .cat-option + label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            padding: 0.9rem 0.5rem;
+            background: var(--warm-white);
+            cursor: pointer;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-transform: none;
+            color: var(--muted);
+            transition: background 0.15s, color 0.15s;
+            margin: 0;
+        }
+        .cat-option + label .cat-icon { font-size: 1.1rem; line-height: 1; }
+        .cat-option:checked + label { background: var(--indigo); color: var(--gold-light); }
+        .cat-option + label:hover { background: rgba(26,31,58,0.06); color: var(--ink); }
+
+        /* ---- FLOW ARROW INPUT ---- */
+        .flow-input-wrap { position: relative; }
+        .flow-input-wrap input { padding-left: 2.5rem; }
+        .flow-prefix {
+            position: absolute;
+            left: 0.9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gold);
+            pointer-events: none;
+        }
+
+        /* ---- SOURCE ENTRY ---- */
+        .source-entry {
+            border: 1px solid var(--border);
+            background: var(--warm-white);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .source-entry-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1.25rem;
+            background: var(--indigo);
+            color: var(--paper);
+        }
+        .source-entry-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+        }
+        .source-entry-body { padding: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .source-entry-body .full { grid-column: 1 / -1; }
+
+        .source-remove-btn {
+            background: none;
+            border: none;
+            color: rgba(245,240,232,0.4);
+            font-size: 1rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 0.25rem;
+            transition: color 0.2s;
+        }
+        .source-remove-btn:hover { color: #e89898; }
+
+        .add-source-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px dashed var(--border);
+            padding: 0.7rem 1.25rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .add-source-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* ---- INLINE SUBSECTION LABEL ---- */
+        .subsection-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin: 1.75rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .subsection-label::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+
+        /* ---- REVIEW PANEL (step 5) ---- */
+        .review-block {
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .review-block-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 1.25rem;
+            background: var(--warm-white);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .review-block-title { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+        .review-edit-btn { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--gold); background: none; border: none; cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; }
+        .review-block-body { padding: 1rem 1.25rem; }
+        .review-row { display: flex; gap: 1rem; padding: 0.35rem 0; border-bottom: 1px solid var(--border-light); font-size: 0.88rem; }
+        .review-row:last-child { border-bottom: none; }
+        .review-key { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.06em; color: var(--muted); width: 130px; flex-shrink: 0; padding-top: 0.15rem; }
+        .review-val { color: var(--ink); flex: 1; line-height: 1.6; }
+
+        /* ---- STEP NAV BUTTONS ---- */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2.5rem;
+            padding-top: 1.75rem;
+            border-top: 1px solid var(--border);
+        }
+        .btn-back {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 0.75rem 1.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .btn-back:hover { border-color: var(--ink); color: var(--ink); }
+        .btn-next, .btn-submit {
+            background: var(--gold);
+            border: none;
+            padding: 0.85rem 2rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--indigo);
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .btn-next:hover, .btn-submit:hover { background: var(--gold-light); }
+        .step-counter { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.08em; }
+
+        /* ---- SUCCESS ---- */
+        .success-panel { display: none; text-align: center; padding: 5rem 2rem; }
+        .success-panel.active { display: block; }
+        .success-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .success-panel h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .success-panel p { color: var(--muted); font-size: 0.9rem; line-height: 1.75; max-width: 420px; margin: 0 auto; }
+        .success-actions { margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; }
+        .success-link { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
+
+        /* ---- FOOTER ---- */
+        footer { background: var(--indigo); color: rgba(245,240,232,0.45); padding: 2.5rem 2rem; text-align: center; border-top: 1px solid var(--gold); }
+        footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; }
+        footer p + p { margin-top: 0.4rem; }
+
+        @media (max-width: 700px) {
+            .cat-picker { grid-template-columns: repeat(2, 1fr); }
+            .field-row { flex-direction: column; }
+            .source-entry-body { grid-template-columns: 1fr; }
+            .tagline-header { display: none; }
+            .step-label { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="logo-group">
+            <a href="index.html" class="logo-link">
+                <div class="logo">HT <span>RASIN</span></div>
+            </a>
+            <span class="tagline-header">Haitian Cultural Influence Archive</span>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="browse.html">Browse</a>
+            <a href="about.html">About</a>
+            <a href="submit.html" class="active">Submit</a>
+        </nav>
+    </div>
+</header>
+
+<section class="page-hero">
+    <div class="page-hero-flag">Community Contributions</div>
+    <h2>Submit a Haitian Influence</h2>
+    <p>Help us document Haiti's cultural contributions. We'll walk you through each part — it takes about 10 minutes.</p>
+</section>
+
+<!-- STEP PROGRESS -->
+<div class="progress-bar">
+    <div class="progress-inner">
+        <div class="step-tab active" data-step="1">
+            <div class="step-num">1</div>
+            <span class="step-label">The Influence</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-tab" data-step="2">
+            <div class="step-num">2</div>
+            <span class="step-label">Timeline</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-tab" data-step="3">
+            <div class="step-num">3</div>
+            <span class="step-label">Sources</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-tab" data-step="4">
+            <div class="step-num">4</div>
+            <span class="step-label">Context</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step-tab" data-step="5">
+            <div class="step-num">5</div>
+            <span class="step-label">Review</span>
+        </div>
+    </div>
+</div>
+
+<div class="form-shell">
+<form id="submissionForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+
+    <!-- ======== STEP 1: THE INFLUENCE ======== -->
+    <div class="step-panel active" id="step1">
+        <div class="step-header">
+            <div class="step-title">What is the influence?</div>
+            <p class="step-desc">Start with the basics — what Haitian cultural element are you documenting, and what category does it fall under?</p>
+        </div>
+
+        <div class="form-group">
+            <label>Title <span class="required">*</span></label>
+            <input type="text" name="title" placeholder="e.g., Cadence Rampa's Evolution into Zouk" required>
+            <p class="help-text">Name it clearly so someone unfamiliar can understand it at a glance</p>
+        </div>
+
+        <div class="subsection-label">Pick a category</div>
+        <div class="cat-picker">
+            <input type="radio" name="category" id="cat-music"    value="music"    class="cat-option" required>
+            <label for="cat-music"><span class="cat-icon">♪</span>Music</label>
+
+            <input type="radio" name="category" id="cat-history"  value="history"  class="cat-option">
+            <label for="cat-history"><span class="cat-icon">⌛</span>History</label>
+
+            <input type="radio" name="category" id="cat-cuisine"  value="cuisine"  class="cat-option">
+            <label for="cat-cuisine"><span class="cat-icon">⚑</span>Cuisine</label>
+
+            <input type="radio" name="category" id="cat-art"      value="art"      class="cat-option">
+            <label for="cat-art"><span class="cat-icon">◆</span>Art & Culture</label>
+
+            <input type="radio" name="category" id="cat-language" value="language" class="cat-option">
+            <label for="cat-language"><span class="cat-icon">◎</span>Language</label>
+
+            <input type="radio" name="category" id="cat-sports"   value="sports"   class="cat-option">
+            <label for="cat-sports"><span class="cat-icon">⚈</span>Sports</label>
+
+            <input type="radio" name="category" id="cat-lit"      value="literature" class="cat-option">
+            <label for="cat-lit"><span class="cat-icon">◇</span>Literature</label>
+
+            <input type="radio" name="category" id="cat-science"  value="science"  class="cat-option">
+            <label for="cat-science"><span class="cat-icon">✦</span>Science</label>
+
+            <input type="radio" name="category" id="cat-other"    value="other"    class="cat-option">
+            <label for="cat-other"><span class="cat-icon">…</span>Other</label>
+        </div>
+
+        <div class="subsection-label">Describe it</div>
+
+        <div class="form-group">
+            <label>One-sentence summary <span class="required">*</span></label>
+            <input type="text" name="summary" placeholder="e.g., Haitian cadence rampa laid the rhythmic groundwork for Caribbean zouk" required>
+            <p class="help-text">This is the preview text shown on browse cards — keep it under 20 words</p>
+        </div>
+
+        <div class="form-group">
+            <label>Full description <span class="required">*</span></label>
+            <textarea name="description" rows="7" placeholder="Tell the full story. Where did this originate in Haiti? How did it travel? What changed in the culture that received it? Be detailed — this is the main archive entry." required></textarea>
+        </div>
+
+        <div class="step-nav">
+            <span></span>
+            <div style="display:flex; align-items:center; gap:1.5rem;">
+                <span class="step-counter">Step 1 of 5</span>
+                <button type="button" class="btn-next" onclick="goToStep(2)">Next: Timeline →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== STEP 2: TIMELINE & GEOGRAPHY ======== -->
+    <div class="step-panel" id="step2">
+        <div class="step-header">
+            <div class="step-title">When and where did it travel?</div>
+            <p class="step-desc">Document the timeline and geographic path of this influence — from its Haitian roots outward.</p>
+        </div>
+
+        <div class="tips-box">
+            <div class="tips-box-title">Example</div>
+            <ul class="tips-list">
+                <li><strong>Start:</strong> 1950s Haiti — Webert Sicot develops cadence rampa in Port-au-Prince</li>
+                <li><strong>End:</strong> 1980s onwards — zouk spreads globally through Kassav'</li>
+                <li><strong>Flow:</strong> Haiti → Dominica → Guadeloupe → Worldwide</li>
+            </ul>
+        </div>
+
+        <div class="field-row">
+            <div class="form-group">
+                <label>Start period <span class="required">*</span></label>
+                <input type="text" name="startPeriod" placeholder="e.g., 1950s, 1804, Early 1900s" required>
+            </div>
+            <div class="form-group">
+                <label>End period <span class="lbl-optional">optional</span></label>
+                <input type="text" name="endPeriod" placeholder="e.g., 1980s, Ongoing">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Geographic flow <span class="required">*</span></label>
+            <div class="flow-input-wrap">
+                <span class="flow-prefix">🇭🇹 →</span>
+                <input type="text" name="geographicFlow" placeholder="Dominica → Guadeloupe → Worldwide" style="padding-left: 3rem;" required>
+            </div>
+            <p class="help-text">Starting from Haiti, trace where and how it spread</p>
+        </div>
+
+        <div class="form-group">
+            <label>Key Haitian figures <span class="lbl-optional">optional</span></label>
+            <input type="text" name="keyFigures" placeholder="e.g., Webert Sicot, Nemours Jean-Baptiste">
+            <p class="help-text">People from Haiti who were central to this influence</p>
+        </div>
+
+        <div class="step-nav">
+            <button type="button" class="btn-back" onclick="goToStep(1)">← Back</button>
+            <div style="display:flex; align-items:center; gap:1.5rem;">
+                <span class="step-counter">Step 2 of 5</span>
+                <button type="button" class="btn-next" onclick="goToStep(3)">Next: Sources →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== STEP 3: SOURCES ======== -->
+    <div class="step-panel" id="step3">
+        <div class="step-header">
+            <div class="step-title">What's your evidence?</div>
+            <p class="step-desc">Every influence must be backed by at least 2 sources from <em>different</em> categories. This is what separates an archive from an opinion.</p>
+        </div>
+
+        <div class="tips-box">
+            <div class="tips-box-title">What counts as a source</div>
+            <ul class="tips-list">
+                <li><strong>Strong:</strong> Original recordings, academic papers, direct interviews with artists</li>
+                <li><strong>Also valid:</strong> News articles, documentaries, oral histories, family accounts</li>
+                <li><strong>Mix them:</strong> Don't use 2 news articles — pair a recording with an interview, etc.</li>
+            </ul>
+        </div>
+
+        <div id="sourcesContainer">
+            <div class="source-entry" id="source-1">
+                <div class="source-entry-head">
+                    <span class="source-entry-label">Source #1 — Required</span>
+                </div>
+                <div class="source-entry-body">
+                    <div class="form-group">
+                        <label>Source type <span class="required">*</span></label>
+                        <select name="sourceType1" required>
+                            <option value="">Select type…</option>
+                            <option value="recording">Music Recording / Album</option>
+                            <option value="interview">Interview / Direct Quote</option>
+                            <option value="academic">Academic Paper</option>
+                            <option value="documentary">Documentary / Film</option>
+                            <option value="article">News / Magazine Article</option>
+                            <option value="book">Book</option>
+                            <option value="oral">Oral History / Family Account</option>
+                            <option value="archive">Archive / Historical Document</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>URL <span class="lbl-optional">if available</span></label>
+                        <input type="url" name="sourceUrl1" placeholder="https://">
+                    </div>
+                    <div class="form-group full">
+                        <label>Full citation <span class="required">*</span></label>
+                        <textarea name="sourceCitation1" rows="2" placeholder='e.g., Webert Sicot — "Cadence Rampa Volume 2" (1962, Marc Records). Album demonstrating the rhythmic foundation of cadence rampa.' required></textarea>
+                        <p class="help-text">Include title, author/artist, year, publisher, and a note on what it proves</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source-entry" id="source-2">
+                <div class="source-entry-head">
+                    <span class="source-entry-label">Source #2 — Required</span>
+                </div>
+                <div class="source-entry-body">
+                    <div class="form-group">
+                        <label>Source type <span class="required">*</span></label>
+                        <select name="sourceType2" required>
+                            <option value="">Select type…</option>
+                            <option value="recording">Music Recording / Album</option>
+                            <option value="interview">Interview / Direct Quote</option>
+                            <option value="academic">Academic Paper</option>
+                            <option value="documentary">Documentary / Film</option>
+                            <option value="article">News / Magazine Article</option>
+                            <option value="book">Book</option>
+                            <option value="oral">Oral History / Family Account</option>
+                            <option value="archive">Archive / Historical Document</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>URL <span class="lbl-optional">if available</span></label>
+                        <input type="url" name="sourceUrl2" placeholder="https://">
+                    </div>
+                    <div class="form-group full">
+                        <label>Full citation <span class="required">*</span></label>
+                        <textarea name="sourceCitation2" rows="2" placeholder="Provide full details for a second, different type of source" required></textarea>
+                        <p class="help-text">Must be a different source type than Source #1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="add-source-btn" id="addSourceBtn">+ Add a third source (optional)</button>
+
+        <div class="step-nav">
+            <button type="button" class="btn-back" onclick="goToStep(2)">← Back</button>
+            <div style="display:flex; align-items:center; gap:1.5rem;">
+                <span class="step-counter">Step 3 of 5</span>
+                <button type="button" class="btn-next" onclick="goToStep(4)">Next: Context →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== STEP 4: CONTEXT ======== -->
+    <div class="step-panel" id="step4">
+        <div class="step-header">
+            <div class="step-title">Add context</div>
+            <p class="step-desc">This is where you help us fight erasure. Tell us what's commonly misunderstood, and why documenting this matters.</p>
+        </div>
+
+        <div class="form-group">
+            <label>Common misconceptions <span class="lbl-optional">encouraged</span></label>
+            <textarea name="misconceptions" rows="4" placeholder="Is this influence usually misattributed to another country or culture? What does mainstream history get wrong? e.g., 'Zouk is often called a Guadeloupean invention without acknowledging its Haitian roots through cadence rampa.'"></textarea>
+            <p class="help-text">This directly counters cultural erasure — the more specific the better</p>
+        </div>
+
+        <div class="form-group">
+            <label>Why this matters <span class="lbl-optional">optional</span></label>
+            <textarea name="whyItMatters" rows="4" placeholder="Why is it important to have this documented? What does this influence say about Haiti's role in global culture?"></textarea>
+        </div>
+
+        <div class="subsection-label">About you</div>
+
+        <div class="field-row">
+            <div class="form-group">
+                <label>Your name <span class="required">*</span></label>
+                <input type="text" name="submitterName" placeholder="How we'll credit you" required>
+            </div>
+            <div class="form-group">
+                <label>Email <span class="required">*</span></label>
+                <input type="email" name="submitterEmail" placeholder="For follow-up questions only" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Your connection to this influence <span class="lbl-optional">optional</span></label>
+            <input type="text" name="relationship" placeholder="e.g., Descendant of artist, researcher in Caribbean music history, community member">
+            <p class="help-text">Helps us understand your perspective — community voices are valued</p>
+        </div>
+
+        <div class="step-nav">
+            <button type="button" class="btn-back" onclick="goToStep(3)">← Back</button>
+            <div style="display:flex; align-items:center; gap:1.5rem;">
+                <span class="step-counter">Step 4 of 5</span>
+                <button type="button" class="btn-next" onclick="goToStep(5)">Review Submission →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== STEP 5: REVIEW ======== -->
+    <div class="step-panel" id="step5">
+        <div class="step-header">
+            <div class="step-title">Review your submission</div>
+            <p class="step-desc">Check everything before sending. Use the Edit buttons to go back and make changes.</p>
+        </div>
+
+        <div class="review-block">
+            <div class="review-block-head">
+                <span class="review-block-title">The Influence</span>
+                <button type="button" class="review-edit-btn" onclick="goToStep(1)">Edit →</button>
+            </div>
+            <div class="review-block-body" id="review-1">
+                <div class="review-row"><span class="review-key">Title</span><span class="review-val" id="rv-title">—</span></div>
+                <div class="review-row"><span class="review-key">Category</span><span class="review-val" id="rv-category">—</span></div>
+                <div class="review-row"><span class="review-key">Summary</span><span class="review-val" id="rv-summary">—</span></div>
+                <div class="review-row"><span class="review-key">Description</span><span class="review-val" id="rv-description" style="white-space:pre-wrap;">—</span></div>
+            </div>
+        </div>
+
+        <div class="review-block">
+            <div class="review-block-head">
+                <span class="review-block-title">Timeline & Geography</span>
+                <button type="button" class="review-edit-btn" onclick="goToStep(2)">Edit →</button>
+            </div>
+            <div class="review-block-body">
+                <div class="review-row"><span class="review-key">Period</span><span class="review-val" id="rv-period">—</span></div>
+                <div class="review-row"><span class="review-key">Geographic flow</span><span class="review-val" id="rv-flow">—</span></div>
+                <div class="review-row"><span class="review-key">Key figures</span><span class="review-val" id="rv-figures">—</span></div>
+            </div>
+        </div>
+
+        <div class="review-block">
+            <div class="review-block-head">
+                <span class="review-block-title">Sources</span>
+                <button type="button" class="review-edit-btn" onclick="goToStep(3)">Edit →</button>
+            </div>
+            <div class="review-block-body" id="rv-sources">—</div>
+        </div>
+
+        <div class="review-block">
+            <div class="review-block-head">
+                <span class="review-block-title">Context & Submitter</span>
+                <button type="button" class="review-edit-btn" onclick="goToStep(4)">Edit →</button>
+            </div>
+            <div class="review-block-body">
+                <div class="review-row"><span class="review-key">Misconceptions</span><span class="review-val" id="rv-misconceptions">—</span></div>
+                <div class="review-row"><span class="review-key">Why it matters</span><span class="review-val" id="rv-whymatters">—</span></div>
+                <div class="review-row"><span class="review-key">Submitted by</span><span class="review-val" id="rv-submitter">—</span></div>
+            </div>
+        </div>
+
+        <div class="step-nav">
+            <button type="button" class="btn-back" onclick="goToStep(4)">← Back</button>
+            <div style="display:flex; align-items:center; gap:1.5rem;">
+                <span class="step-counter">Step 5 of 5</span>
+                <button type="submit" class="btn-submit">Submit for Review ✓</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<!-- SUCCESS STATE -->
+<div class="success-panel" id="successPanel">
+    <div class="success-icon">◆</div>
+    <h3>Submission Received</h3>
+    <p>Thank you for contributing to the archive. We'll review your submission for accuracy and completeness and typically respond within 7–10 days.</p>
+    <div class="success-actions">
+        <a href="browse.html" class="success-link">Browse the Archive →</a>
+        <a href="submit.html" class="success-link">Submit Another →</a>
+    </div>
+</div>
+
+</div><!-- /form-shell -->
+
+<footer>
+    <p>&copy; 2026 Rasin Archive — Preserving Haiti's cultural contributions to the world.</p>
+    <p>Built with respect for Haitian culture and community.</p>
+</footer>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 5;
+
+    function goToStep(n) {
+        // Hide current
+        document.getElementById('step' + currentStep).classList.remove('active');
+        document.querySelector(`.step-tab[data-step="${currentStep}"]`).classList.remove('active');
+        document.querySelector(`.step-tab[data-step="${currentStep}"]`).classList.add('completed');
+
+        // Show new
+        currentStep = n;
+        document.getElementById('step' + currentStep).classList.add('active');
+        document.querySelectorAll('.step-tab').forEach(t => {
+            const s = parseInt(t.dataset.step);
+            t.classList.toggle('active', s === n);
+            if (s < n) t.classList.add('completed');
+        });
+
+        // If going to review, populate it
+        if (n === 5) populateReview();
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function val(name) {
+        const el = document.querySelector(`[name="${name}"]`);
+        return el ? el.value.trim() : '';
+    }
+
+    function populateReview() {
+        // Step 1
+        document.getElementById('rv-title').textContent       = val('title') || '—';
+        const catChecked = document.querySelector('input[name="category"]:checked');
+        document.getElementById('rv-category').textContent   = catChecked ? catChecked.nextElementSibling.textContent.trim() : '—';
+        document.getElementById('rv-summary').textContent    = val('summary') || '—';
+        document.getElementById('rv-description').textContent = val('description') || '—';
+
+        // Step 2
+        const start = val('startPeriod'), end = val('endPeriod');
+        document.getElementById('rv-period').textContent     = start ? (end ? `${start} – ${end}` : start) : '—';
+        document.getElementById('rv-flow').textContent       = val('geographicFlow') ? '🇭🇹 → ' + val('geographicFlow') : '—';
+        document.getElementById('rv-figures').textContent    = val('keyFigures') || '—';
+
+        // Step 3
+        const sourcesEl = document.getElementById('rv-sources');
+        sourcesEl.innerHTML = '';
+        [1, 2, 3].forEach(i => {
+            const cite = val('sourceCitation' + i);
+            const type = val('sourceType' + i);
+            if (cite || type) {
+                const row = document.createElement('div');
+                row.className = 'review-row';
+                row.innerHTML = `<span class="review-key">Source #${i}</span><span class="review-val">${type ? `<strong>${type}</strong> — ` : ''}${cite || '—'}</span>`;
+                sourcesEl.appendChild(row);
+            }
+        });
+        if (!sourcesEl.children.length) sourcesEl.textContent = '—';
+
+        // Step 4
+        document.getElementById('rv-misconceptions').textContent = val('misconceptions') || '—';
+        document.getElementById('rv-whymatters').textContent     = val('whyItMatters') || '—';
+        const name = val('submitterName'), email = val('submitterEmail');
+        document.getElementById('rv-submitter').textContent = name ? `${name} (${email})` : '—';
+    }
+
+    // Add / remove sources
+    let sourceCount = 2;
+    const MAX_SOURCES = 5;
+
+    function renumberSources() {
+        const entries = document.querySelectorAll('#sourcesContainer .source-entry');
+        entries.forEach((entry, i) => {
+            const n = i + 1;
+            const isRequired = n <= 2;
+            // Update header label
+            entry.querySelector('.source-entry-label').textContent =
+                `Source #${n}${isRequired ? ' — Required' : ' — Optional'}`;
+            // Update name attributes
+            const sel = entry.querySelector('select');
+            if (sel) sel.name = `sourceType${n}`;
+            const url = entry.querySelector('input[type="url"]');
+            if (url) url.name = `sourceUrl${n}`;
+            const ta = entry.querySelector('textarea');
+            if (ta) ta.name = `sourceCitation${n}`;
+            // Show/hide remove button (never on 1 or 2)
+            const removeBtn = entry.querySelector('.source-remove-btn');
+            if (removeBtn) removeBtn.style.display = n > 2 ? '' : 'none';
+        });
+        sourceCount = entries.length;
+        const addBtn = document.getElementById('addSourceBtn');
+        addBtn.style.display = sourceCount >= MAX_SOURCES ? 'none' : '';
+        const remaining = MAX_SOURCES - sourceCount;
+        addBtn.textContent = `+ Add another source (${remaining} remaining)`;
+    }
+
+    document.getElementById('addSourceBtn').addEventListener('click', function() {
+        if (sourceCount >= MAX_SOURCES) return;
+        const n = sourceCount + 1;
+        const container = document.getElementById('sourcesContainer');
+        const entry = document.createElement('div');
+        entry.className = 'source-entry';
+        entry.innerHTML = `
+            <div class="source-entry-head">
+                <span class="source-entry-label"></span>
+                <button type="button" class="source-remove-btn" title="Remove this source">✕</button>
+            </div>
+            <div class="source-entry-body">
+                <div class="form-group">
+                    <label>Source type</label>
+                    <select>
+                        <option value="">Select type…</option>
+                        <option value="recording">Music Recording / Album</option>
+                        <option value="interview">Interview / Direct Quote</option>
+                        <option value="academic">Academic Paper</option>
+                        <option value="documentary">Documentary / Film</option>
+                        <option value="article">News / Magazine Article</option>
+                        <option value="book">Book</option>
+                        <option value="oral">Oral History / Family Account</option>
+                        <option value="archive">Archive / Historical Document</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>URL <span class="lbl-optional">if available</span></label>
+                    <input type="url" placeholder="https://">
+                </div>
+                <div class="form-group full">
+                    <label>Full citation</label>
+                    <textarea rows="2" placeholder="Full citation details for this source"></textarea>
+                </div>
+            </div>`;
+        entry.querySelector('.source-remove-btn').addEventListener('click', () => {
+            entry.remove();
+            renumberSources();
+        });
+        container.appendChild(entry);
+        renumberSources();
+    });
+
+    // Form submit → Formspree
+    document.getElementById('submissionForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = this.querySelector('.btn-submit');
+        btn.textContent = 'Sending…';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (res.ok) {
+                this.style.display = 'none';
+                document.getElementById('successPanel').classList.add('active');
+                document.querySelector('.progress-bar').style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                btn.textContent = 'Submit for Review ✓';
+                btn.disabled = false;
+                alert('Something went wrong. Please try again or email us directly.');
+            }
+        } catch (err) {
+            btn.textContent = 'Submit for Review ✓';
+            btn.disabled = false;
+            alert('Network error. Please check your connection and try again.');
+        }
+    });
+</script>
+
+</body>
+</html>

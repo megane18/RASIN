@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadence Rampa's Evolution into Zouk — Rasin Archive</title>
+    <meta name="description" content="Webert Sicot's cadence rampa traveled through the Caribbean, influencing cadence-lypso and evolving into zouk. Discover this underrecognized Haitian cultural export.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --ink: #0f0d0a; --paper: #f5f0e8; --warm-white: #faf8f3;
+            --gold: #c9922a; --gold-light: #e8b84b; --red: #b83232;
+            --indigo: #1a1f3a; --muted: #7a6f5f; --border: #d9d0be; --border-light: #ece5d6;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Instrument Sans', sans-serif; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.6; }
+
+        /* HEADER */
+        header { background: var(--indigo); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .logo-group { display: flex; align-items: baseline; gap: 1rem; }
+        .logo-link { text-decoration: none; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; letter-spacing: 0.25em; color: var(--gold-light); text-transform: uppercase; }
+        .logo span { color: var(--red); }
+        .tagline-header { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: rgba(245,240,232,0.4); letter-spacing: 0.12em; text-transform: uppercase; border-left: 1px solid rgba(245,240,232,0.2); padding-left: 1rem; }
+        nav { display: flex; gap: 0.25rem; }
+        nav a { color: rgba(245,240,232,0.7); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.9rem; border-radius: 2px; transition: color 0.2s, background 0.2s; }
+        nav a:hover { color: var(--gold-light); background: rgba(201,146,42,0.12); }
+
+        /* BREADCRUMB */
+        .breadcrumb-bar { max-width: 1200px; margin: 0 auto; padding: 1.25rem 2rem; }
+        .breadcrumb { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; color: var(--muted); }
+        .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+        .breadcrumb a:hover { color: var(--gold); }
+        .breadcrumb span { margin: 0 0.4rem; }
+
+        /* MAIN LAYOUT */
+        .detail-body { max-width: 1200px; margin: 0 auto; padding: 0 2rem 5rem; display: grid; grid-template-columns: 1fr 280px; gap: 3rem; align-items: start; }
+
+        /* ARTICLE HERO */
+        .art-hero { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+        .cat-tag { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; background: #1a2f2a; color: #6ecfaa; display: inline-block; margin-bottom: 1.25rem; }
+        .art-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.9rem, 3.5vw, 2.8rem); font-weight: 600; line-height: 1.2; margin-bottom: 1.25rem; }
+        .art-lead { font-size: 1.05rem; color: var(--muted); line-height: 1.8; max-width: 640px; margin-bottom: 1.5rem; }
+        .art-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .art-meta-item { display: flex; align-items: center; gap: 0.4rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.06em; color: var(--muted); }
+        .art-meta-item .label { color: var(--ink); font-weight: 500; }
+
+        /* CONTENT SECTIONS */
+        .content-section { margin-bottom: 3rem; }
+        .section-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 1rem; }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .body-text { font-size: 0.93rem; color: var(--muted); line-height: 1.85; margin-bottom: 1rem; }
+
+        /* MISCONCEPTION BOX */
+        .misconception-box { background: rgba(184,50,50,0.06); border-left: 3px solid var(--red); padding: 1.25rem 1.5rem; margin-top: 1.5rem; }
+        .misconception-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); margin-bottom: 0.6rem; }
+        .misconception-box p { font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+
+        /* TIMELINE */
+        .timeline { position: relative; padding-left: 1.5rem; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0.6rem; bottom: 0.6rem; width: 1px; background: var(--border); }
+        .timeline-item { position: relative; padding: 0 0 2rem 1.5rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.5rem; top: 0.45rem; width: 7px; height: 7px; background: var(--gold); border: 2px solid var(--paper); outline: 1px solid var(--gold); }
+        .tl-period { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.2rem; }
+        .tl-location { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .tl-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+        /* KEY FIGURES */
+        .figures-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+        .figure-card { background: var(--warm-white); padding: 1.25rem; text-align: center; }
+        .figure-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .figure-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .figure-role { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.04em; }
+
+        /* SOURCES */
+        .sources-list { display: flex; flex-direction: column; gap: 0; }
+        .source-item { padding: 1.25rem 0; border-bottom: 1px solid var(--border-light); }
+        .source-item:last-child { border-bottom: none; }
+        .source-type { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.18rem 0.55rem; background: var(--indigo); color: var(--gold-light); display: inline-block; margin-bottom: 0.5rem; }
+        .source-cite { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .source-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; margin-bottom: 0.6rem; }
+        .source-link { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 1px; transition: color 0.2s; }
+        .source-link:hover { color: var(--ink); border-color: var(--ink); }
+
+        /* WHY IT MATTERS */
+        .matters-box { background: var(--indigo); color: var(--paper); padding: 2rem; }
+        .matters-box p { font-size: 0.9rem; color: rgba(245,240,232,0.7); line-height: 1.85; }
+
+        /* SIDEBAR */
+        .sidebar { position: sticky; top: 84px; }
+        .sidebar-card { background: var(--warm-white); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1.5rem; }
+        .sidebar-card h3 { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-light); }
+        .quick-facts { list-style: none; display: flex; flex-direction: column; gap: 0; }
+        .fact-item { padding: 0.65rem 0; border-bottom: 1px solid var(--border-light); display: flex; flex-direction: column; gap: 0.15rem; }
+        .fact-item:last-child { border-bottom: none; }
+        .fact-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+        .fact-value { font-size: 0.88rem; color: var(--ink); }
+        .verified-badge { font-family: 'DM Mono', monospace; font-size: 0.6rem; background: #1a2f2a; color: #6ecfaa; padding: 0.18rem 0.5rem; letter-spacing: 0.06em; }
+
+        .share-row { display: flex; gap: 0.5rem; margin-top: 1.25rem; }
+        .share-btn { flex: 1; background: transparent; border: 1px solid var(--border); padding: 0.5rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+        .share-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        .contributor-box { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border-light); }
+        .contributor-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+        .contributor-name { font-size: 0.88rem; font-weight: 600; }
+        .contributor-date { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); margin-top: 0.2rem; }
+
+        .related-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+        .related-item { padding: 0.75rem 0; border-bottom: 1px solid var(--border-light); }
+        .related-item:last-child { border-bottom: none; }
+        .related-title { font-size: 0.88rem; color: var(--ink); text-decoration: none; display: block; margin-bottom: 0.15rem; transition: color 0.2s; }
+        .related-title:hover { color: var(--gold); }
+        .related-meta { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.04em; }
+
+        /* FOOTER */
+        footer { background: var(--indigo); color: rgba(245,240,232,0.45); padding: 2.5rem 2rem; text-align: center; border-top: 1px solid var(--gold); }
+        footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; }
+        footer p + p { margin-top: 0.4rem; }
+
+        @media (max-width: 900px) {
+            .detail-body { grid-template-columns: 1fr; }
+            .sidebar { position: static; }
+            .figures-grid { grid-template-columns: 1fr 1fr; }
+            .tagline-header { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="logo-group">
+            <a href="index.html" class="logo-link">
+                <div class="logo">HT <span>RASIN</span></div>
+            </a>
+            <span class="tagline-header">Haitian Cultural Influence Archive</span>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="browse.html">Browse</a>
+            <a href="about.html">About</a>
+            <a href="submit.html">Submit</a>
+        </nav>
+    </div>
+</header>
+
+<div class="breadcrumb-bar">
+    <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="browse.html">Browse</a>
+        <span>/</span>
+        <a href="browse.html#music">Music</a>
+        <span>/</span>
+        Cadence Rampa's Evolution into Zouk
+    </div>
+</div>
+
+<div class="detail-body">
+    <main>
+
+        <div class="art-hero">
+            <span class="cat-tag">Music</span>
+            <h1>Cadence Rampa's Evolution into Zouk</h1>
+            <p class="art-lead">Webert Sicot's cadence rampa (1950s–60s Haiti) traveled through the Caribbean, influencing Dominica's cadence-lypso in the 1970s, which then evolved into Guadeloupe's zouk in the 1980s. This musical lineage represents one of Haiti's most significant yet underrecognized cultural exports.</p>
+            <div class="art-meta">
+                <div class="art-meta-item"><span class="label">Period</span><span>1950s–1980s</span></div>
+                <div class="art-meta-item"><span class="label">Route</span><span>Haiti → Dominica → Guadeloupe</span></div>
+                <div class="art-meta-item"><span class="label">Sources</span><span>4 verified</span></div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-label">Full Story</div>
+            <p class="body-text">In the 1950s and 1960s, Haitian musicians Webert Sicot and Nemours Jean-Baptiste revolutionized Haitian music by creating cadence rampa (also known as compas direct). This new style combined traditional Haitian rhythms with modern instrumentation and a more direct, danceable beat that would prove influential far beyond Haiti's borders.</p>
+            <p class="body-text">As Haitian musicians toured throughout the Caribbean, cadence rampa reached Dominica in the late 1960s and early 1970s. Dominican musicians, particularly bands like Exile One led by Gordon Henderson, absorbed these rhythms and fused them with their own musical traditions to create cadence-lypso. This hybrid genre maintained the driving compas beat while incorporating elements of Dominican traditional music and calypso.</p>
+            <p class="body-text">In the early 1980s, musicians in Guadeloupe and Martinique—particularly the pioneering band Kassav'—took the cadence-lypso sound and further refined it, adding synthesizers and modern production techniques. The result was zouk, which would become one of the most popular music genres across the French Caribbean and beyond.</p>
+
+            <div class="misconception-box">
+                <div class="misconception-label">Common Misconception</div>
+                <p>Zouk is frequently presented as an original Guadeloupean creation without acknowledgment of its Haitian roots. While Kassav' and other Guadeloupean artists certainly innovated and popularized the sound, the fundamental rhythmic foundation comes directly from Haitian cadence rampa via Dominican cadence-lypso. This erasure of Haitian influence is common in discussions of Caribbean music evolution.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-label">Timeline of Influence</div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="tl-period">1950s–1960s</div>
+                    <div class="tl-location">Haiti</div>
+                    <div class="tl-desc">Webert Sicot and Nemours Jean-Baptiste develop cadence rampa (compas direct), revolutionizing Haitian popular music with a more direct, modern sound while maintaining traditional Haitian rhythmic structures.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="tl-period">Late 1960s–1970s</div>
+                    <div class="tl-location">Dominica</div>
+                    <div class="tl-desc">Dominican musicians, influenced by touring Haitian bands and recordings, create cadence-lypso. Bands like Exile One, Grammacks, and Midnight Groovers fuse cadence rampa with local traditions and calypso elements.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="tl-period">Early 1980s</div>
+                    <div class="tl-location">Guadeloupe & Martinique</div>
+                    <div class="tl-desc">Kassav' and other French Caribbean bands build on cadence-lypso's foundation, adding synthesizers and modern production to create zouk. The genre explodes in popularity throughout the Caribbean, Africa, and Europe.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="tl-period">1980s–Present</div>
+                    <div class="tl-location">Worldwide</div>
+                    <div class="tl-desc">Zouk becomes internationally recognized, influencing music across Africa, South America, and beyond. The Haitian roots of the rhythm are often overlooked in mainstream music history narratives.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-label">Key Figures</div>
+            <div class="figures-grid">
+                <div class="figure-card">
+                    <div class="figure-icon">🎺</div>
+                    <div class="figure-name">Webert Sicot</div>
+                    <div class="figure-role">Pioneer of cadence rampa</div>
+                </div>
+                <div class="figure-card">
+                    <div class="figure-icon">🎸</div>
+                    <div class="figure-name">Nemours Jean-Baptiste</div>
+                    <div class="figure-role">Co-creator of compas direct</div>
+                </div>
+                <div class="figure-card">
+                    <div class="figure-icon">🥁</div>
+                    <div class="figure-name">Gordon Henderson</div>
+                    <div class="figure-role">Leader of Exile One (Dominica)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-label">Sources & Evidence</div>
+            <div class="sources-list">
+                <div class="source-item">
+                    <span class="source-type">Music Recording</span>
+                    <div class="source-cite">Webert Sicot — "Cadence Rampa Volume 2" (1962, Marc Records)</div>
+                    <div class="source-desc">Original recordings demonstrating the foundational rhythmic patterns that would later appear in cadence-lypso and zouk. The album features the signature syncopated bass line and horn arrangements that became characteristic of the genre.</div>
+                    <a href="https://konpa.info/detail.php?search=103066&so0=is&col=kno&_ds=1&p=0#:~:text=Weber%20Sicot%20et%20son%20Super%20Ensemlbe%20%2D,Ibo%20ILP%2D115%20%2D%20discography%20on%20Konpa%20Info." class="source-link">Listen on Archive.org →</a>
+                </div>
+                <div class="source-item">
+                    <span class="source-type">Interview</span>
+                    <div class="source-cite">Gordon Henderson interview in "Antilles: Musiques et Sociétés" (1988)</div>
+                    <div class="source-desc">Henderson explicitly acknowledges Haitian cadence rampa as the primary influence on Exile One's sound, noting that Haitian compas was taken and reshaped with Dominican elements.</div>
+                    <a href="https://www.mondolocal.org/gordon-henderson-origins-of-cadence-lypso-interview/-new-single" class="source-link">Read full interview →</a>
+                </div>
+                <div class="source-item">
+                    <span class="source-type">Academic Paper</span>
+                    <div class="source-cite">Guilbault, Jocelyne. "Zouk: World Music in the West Indies" (University of Chicago Press, 1993)</div>
+                    <div class="source-desc">Comprehensive musicological analysis tracing zouk's evolution from Haitian compas through Dominican cadence-lypso. Includes detailed rhythmic notation showing the progression of the fundamental beat pattern.</div>
+                    <a href="https://press.uchicago.edu/ucp/books/book/chicago/Z/bo3619607.html" class="source-link">View on JSTOR →</a>
+                </div>
+                <!-- <div class="source-item">
+                    <span class="source-type">Documentary</span>
+                    <div class="source-cite">"Konpa: The Music of Haiti" (2010, directed by Rodney Louis)</div>
+                    <div class="source-desc">Features interviews with surviving members of early compas bands and Caribbean musicians discussing Haiti's influence on regional music development. Includes archival footage of Haitian bands touring the Caribbean in the 1960s.</div>
+                    <a href="#" class="source-link">Watch trailer →</a>
+                </div> -->
+                <div class="source-item">
+                    <span class="source-type">News Article</span>
+                    <div class="source-cite">The Haitian Blueprint: Competition as a Catalyst for Zouk</div>
+                    <div class="source-desc">While Zouk was created to reclaim the airwaves of Guadeloupe and Martinique, its DNA was deeply shaped by the Haitian music that dominated the region in the 1970s. In her interview with Afropop Worldwide, Professor Brenda Berrian explains that Kassav’ intentionally "blended" the pulsating energy and modern production of Haitian hits with local Creole traditions, effectively using Haiti’s musical success as the benchmark for their own cultural revolution.</div>
+                    <a href="https://www.afropop.org/articles/interview-brenda-berrian-on-the-music-and-culture-of-the-french-caribbean-part-1#:~:text=B.B:%20Most%20of%20it%20was,as%20well%20as%20Caribbean%20music." class="source-link">Read article →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-label">Why This Matters</div>
+            <div class="matters-box">
+                <p>Documenting the Haitian origins of zouk corrects a historical narrative that has often erased Haitian contributions to Caribbean music. It demonstrates Haiti's role as a cultural innovator and exporter, countering stereotypes that focus only on Haiti's challenges. Finally, it provides a clear example of how cultural influence works—not through simple copying, but through a complex process of adaptation and evolution across borders.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <aside class="sidebar">
+        <div class="sidebar-card">
+            <h3>Quick Facts</h3>
+            <ul class="quick-facts">
+                <li class="fact-item"><span class="fact-label">Period</span><span class="fact-value">1950s–1980s</span></li>
+                <li class="fact-item"><span class="fact-label">Origin</span><span class="fact-value">Port-au-Prince, Haiti</span></li>
+                <li class="fact-item"><span class="fact-label">Geographic Spread</span><span class="fact-value">Haiti → Dominica → Guadeloupe → Worldwide</span></li>
+                <li class="fact-item"><span class="fact-label">Category</span><span class="fact-value">Music / Cultural</span></li>
+                <li class="fact-item"><span class="fact-label">Status</span><span class="fact-value"><span class="verified-badge">✓ Verified</span></span></li>
+            </ul>
+            <div class="share-row">
+                <button class="share-btn">Share</button>
+                <button class="share-btn">Save</button>
+            </div>
+            <div class="contributor-box">
+                <div class="contributor-label">Documented by</div>
+                <!-- <div class="contributor-name">Marcus J.</div> -->
+                 <div class="contributor-name">Megane Alexis</div>
+                <div class="contributor-date">November 2025</div>
+            </div>
+        </div>
+
+        <div class="sidebar-card">
+            <h3>Related Influences</h3>
+            <ul class="related-list">
+                <li class="related-item">
+                    <a href="#" class="related-title">Compas in Afrobeats</a>
+                    <div class="related-meta">Music · 2000s–Present</div>
+                </li>
+                <li class="related-item">
+                    <a href="#" class="related-title">Haitian Merengue's Dominican Influence</a>
+                    <div class="related-meta">Music · 1930s–1960s</div>
+                </li>
+                <li class="related-item">
+                    <a href="#" class="related-title">Konpa's Impact on Congolese Rumba</a>
+                    <div class="related-meta">Music · 1960s–1980s</div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+</div>
+
+<footer>
+    <p>&copy; 2026 Rasin Archive — Preserving Haiti's cultural contributions to the world.</p>
+    <p>Built with respect for Haitian culture and community.</p>
+</footer>
+
+</body>
+</html>

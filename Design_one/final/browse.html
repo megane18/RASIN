@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Influences — Rasin Archive</title>
+    <meta name="description" content="Browse documented Haitian cultural influences by category. Discover Haiti's contributions to music, history, cuisine, art, and more.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --ink: #0f0d0a; --paper: #f5f0e8; --warm-white: #faf8f3;
+            --gold: #c9922a; --gold-light: #e8b84b; --red: #b83232;
+            --indigo: #1a1f3a; --muted: #7a6f5f; --border: #d9d0be; --border-light: #ece5d6;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Instrument Sans', sans-serif; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.6; }
+
+        /* ---- HEADER ---- */
+        header { background: var(--indigo); border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .logo-group { display: flex; align-items: baseline; gap: 1rem; }
+        .logo-link { text-decoration: none; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; letter-spacing: 0.25em; color: var(--gold-light); text-transform: uppercase; }
+        .logo span { color: var(--red); }
+        .tagline-header { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: rgba(245,240,232,0.4); letter-spacing: 0.12em; text-transform: uppercase; border-left: 1px solid rgba(245,240,232,0.2); padding-left: 1rem; }
+        nav { display: flex; gap: 0.25rem; }
+        nav a { color: rgba(245,240,232,0.7); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.9rem; border-radius: 2px; transition: color 0.2s, background 0.2s; }
+        nav a:hover, nav a.active { color: var(--gold-light); background: rgba(201,146,42,0.12); }
+
+        /* ---- PAGE HERO ---- */
+        .page-hero { background: var(--indigo); color: var(--paper); padding: 3.5rem 2rem 0; position: relative; }
+        .page-hero-flag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; text-align: center; }
+        .page-hero h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; text-align: center; }
+        .page-hero p { font-size: 0.95rem; color: rgba(245,240,232,0.55); max-width: 480px; margin: 0.75rem auto 0; line-height: 1.7; text-align: center; }
+
+        /* ---- FILTER PANEL (integrated into hero bottom) ---- */
+        .filter-panel {
+            max-width: 1280px;
+            margin: 2.5rem auto 0;
+            background: rgba(255,255,255,0.04);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            align-items: stretch;
+        }
+        .filter-field {
+            display: flex;
+            align-items: center;
+            border-right: 1px solid rgba(255,255,255,0.08);
+        }
+        .filter-field:last-child { border-right: none; }
+        .filter-icon {
+            padding: 0 1rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            color: rgba(245,240,232,0.35);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            border-right: 1px solid rgba(255,255,255,0.06);
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .filter-field input,
+        .filter-field select {
+            background: transparent;
+            border: none;
+            padding: 1.1rem 1rem;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.88rem;
+            color: rgba(245,240,232,0.8);
+            outline: none;
+            width: 100%;
+            cursor: pointer;
+           
+            appearance: none;
+        }
+        .filter-field input::placeholder { color: rgba(245,240,232,0.3); }
+        .filter-field select option { background: var(--indigo); color: var(--paper); }
+        .filter-field input:focus,
+        .filter-field select:focus { background: rgba(201,146,42,0.06); }
+
+        .hero-rule { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+
+        /* ---- TWO-COLUMN LAYOUT ---- */
+        .browse-shell {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            align-items: start;
+        }
+
+        /* ---- STICKY LEFT NAV ---- */
+        .cat-nav {
+            position: sticky;
+            top: 84px;
+            padding: 2.5rem 1.5rem 2.5rem 0;
+            border-right: 1px solid var(--border-light);
+        }
+        .cat-nav-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.75rem;
+        }
+        .cat-nav-links { display: flex; flex-direction: column; }
+        .cat-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.75rem;
+            text-decoration: none;
+            font-size: 0.88rem;
+            color: var(--muted);
+            border-left: 2px solid transparent;
+            margin-left: -1px;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .cat-nav-link:hover, .cat-nav-link.active {
+            color: var(--ink);
+            border-left-color: var(--gold);
+            background: rgba(201,146,42,0.06);
+        }
+        .cat-nav-count {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--muted);
+            background: var(--border-light);
+            padding: 0.1rem 0.4rem;
+        }
+        .cat-nav-link:hover .cat-nav-count,
+        .cat-nav-link.active .cat-nav-count { background: rgba(201,146,42,0.15); color: var(--gold); }
+
+        /* ---- CONTENT AREA ---- */
+        .content-area { padding: 0 0 0 2rem; }
+
+        /* ---- CATEGORY SECTION ---- */
+        .cat-section { margin-bottom: 0; }
+
+        .cat-section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 2rem 0 1.1rem;
+            border-bottom: 2px solid var(--ink);
+        }
+        .cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .cat-dot.music    { background: #6ecfaa; }
+        .cat-dot.history  { background: #e89898; }
+        .cat-dot.cuisine  { background: #e8cc88; }
+        .cat-dot.art      { background: #a8a8e8; }
+        .cat-dot.language { background: #d8a8d8; }
+        .cat-dot.sports   { background: #88cc88; }
+
+        .cat-section-name { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; flex: 1; }
+        .cat-section-count { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.06em; }
+        .cat-view-all { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 1px; white-space: nowrap; transition: color 0.2s; }
+        .cat-view-all:hover { color: var(--ink); border-color: var(--ink); }
+
+        /* ---- INFLUENCE CARDS (two-column internal grid) ---- */
+        .influence-card {
+            display: grid;
+            grid-template-columns: 1fr 80px;
+            gap: 1rem 1.5rem;
+            align-items: start;
+            padding: 1.35rem 0;
+            border-bottom: 1px solid var(--border-light);
+            transition: background 0.15s;
+        }
+        .influence-card:hover { background: rgba(201,146,42,0.025); margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
+        .influence-card:last-child { border-bottom: none; }
+
+        .card-meta { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.45rem; flex-wrap: wrap; }
+        .cat-tag { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.18rem 0.55rem; }
+        .cat-tag.music    { background: #1a2f2a; color: #6ecfaa; }
+        .cat-tag.history  { background: #2f1a1a; color: #e89898; }
+        .cat-tag.cuisine  { background: #2f2a1a; color: #e8cc88; }
+        .cat-tag.art      { background: #1a1a2f; color: #a8a8e8; }
+        .cat-tag.language { background: #2a1f2a; color: #d8a8d8; }
+        .cat-tag.sports   { background: #1a2a1a; color: #88cc88; }
+        .card-info { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.04em; }
+        .influence-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.28rem; font-weight: 600; line-height: 1.25; margin-bottom: 0.4rem; }
+        .influence-card h4 a { color: var(--ink); text-decoration: none; transition: color 0.2s; }
+        .influence-card h4 a:hover { color: var(--gold); }
+        .influence-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+
+        .card-side { text-align: right; padding-top: 0.2rem; }
+        .card-source-count { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.06em; display: block; margin-bottom: 0.5rem; }
+        .card-read-link { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0; transition: opacity 0.2s; }
+        .influence-card:hover .card-read-link { opacity: 1; }
+
+        .no-results { display: none; text-align: center; padding: 4rem 0; font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; }
+
+        /* ---- FOOTER ---- */
+        footer { background: var(--indigo); color: rgba(245,240,232,0.45); padding: 2.5rem 2rem; text-align: center; border-top: 1px solid var(--gold); }
+        footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; }
+        footer p + p { margin-top: 0.4rem; }
+
+        @media (max-width: 900px) {
+            .browse-shell { grid-template-columns: 1fr; }
+            .cat-nav { display: none; }
+            .content-area { padding-left: 0; }
+            .filter-panel { grid-template-columns: 1fr; }
+            .filter-field { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        }
+        @media (max-width: 600px) {
+            .tagline-header { display: none; }
+            .influence-card { grid-template-columns: 1fr; }
+            .card-side { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="logo-group">
+            <a href="index.html" class="logo-link">
+                <div class="logo">HT <span>RASIN</span></div>
+            </a>
+            <span class="tagline-header">Haitian Cultural Influence Archive</span>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="browse.html" class="active">Browse</a>
+            <a href="about.html">About</a>
+            <a href="submit.html">Submit</a>
+        </nav>
+    </div>
+</header>
+
+<section class="page-hero">
+    <div class="page-hero-flag">153 Influences Documented</div>
+    <h2>Browse All Influences</h2>
+    <p>Explore documented Haitian cultural influences organized by category. Each has been verified with multiple credible sources.</p>
+
+    <div class="filter-panel">
+        <div class="filter-field">
+            <span class="filter-icon">Search</span>
+            <input type="text" id="searchInput" placeholder="Search by title, region, period…">
+        </div>
+
+        <div class="filter-field">
+            <span class="filter-icon">Category</span>
+            <select id="categoryFilter">
+                <option value="">All</option>
+                <option value="music">Music</option>
+                <option value="history">History</option>
+                <option value="cuisine">Cuisine</option>
+                <option value="art">Art & Culture</option>
+                <option value="language">Language</option>
+                <option value="sports">Sports</option>
+            </select>
+        </div>
+        <div class="filter-field">
+            <span class="filter-icon">Sort</span>
+            <select id="sortBy">
+                <option value="recent">Most Recent</option>
+                <option value="oldest">Oldest First</option>
+                <option value="alphabetical">A–Z</option>
+                <option value="sources">Most Sources</option>
+            </select>
+        </div>
+    </div>
+    <br>
+</section>
+<br>
+<div class="hero-rule"></div>
+
+<div class="browse-shell">
+
+    <!-- STICKY LEFT NAV -->
+    <nav class="cat-nav" aria-label="Category navigation">
+        <div class="cat-nav-label">Categories</div>
+        <div class="cat-nav-links">
+            <a href="#music"    class="cat-nav-link active" data-filter="music">Music    <span class="cat-nav-count">47</span></a>
+            <a href="#history"  class="cat-nav-link"        data-filter="history">History  <span class="cat-nav-count">32</span></a>
+            <a href="#cuisine"  class="cat-nav-link"        data-filter="cuisine">Cuisine  <span class="cat-nav-count">28</span></a>
+            <a href="#art"      class="cat-nav-link"        data-filter="art">Art &amp; Culture <span class="cat-nav-count">19</span></a>
+            <a href="#language" class="cat-nav-link"        data-filter="language">Language <span class="cat-nav-count">15</span></a>
+            <a href="#sports"   class="cat-nav-link"        data-filter="sports">Sports   <span class="cat-nav-count">12</span></a>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <div class="content-area" id="contentArea">
+
+        <!-- MUSIC -->
+        <section class="cat-section" id="music" data-category="music">
+            <div class="cat-section-header">
+                <span class="cat-dot music"></span>
+                <span class="cat-section-name">Music</span>
+                <span class="cat-section-count">47 influences</span>
+                <a href="#" class="cat-view-all">View all →</a>
+            </div>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag music">Music</span><span class="card-info">1950s–1980s · Caribbean</span></div>
+                    <h4><a href="influence.html">Cadence Rampa's Evolution into Zouk</a></h4>
+                    <p>Webert Sicot's cadence rampa (1950s–60s Haiti) traveled through the Caribbean, influencing Dominica's cadence-lypso in the 1970s, which then evolved into Guadeloupe's zouk in the 1980s.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">5 sources</span><a href="influence.html" class="card-read-link">Read →</a></div>
+            </article>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag music">Music</span><span class="card-info">2000s–Present · West Africa</span></div>
+                    <h4><a href="#">Compas Direct in Modern Afrobeats</a></h4>
+                    <p>The rhythmic patterns and bass lines from Haitian compas have become foundational elements in contemporary Afrobeats music, particularly in West African productions since the 2000s.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">6 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag music">Music</span><span class="card-info">1800s–1920s · New Orleans</span></div>
+                    <h4><a href="#">Haitian Vodou Rhythms in Jazz</a></h4>
+                    <p>Traditional Haitian Vodou ceremonial rhythms influenced early jazz development in New Orleans through Haitian migration, particularly the syncopated patterns and polyrhythmic structures.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">7 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+        </section>
+
+        <!-- HISTORY -->
+        <section class="cat-section" id="history" data-category="history">
+            <div class="cat-section-header">
+                <span class="cat-dot history"></span>
+                <span class="cat-section-name">History</span>
+                <span class="cat-section-count">32 influences</span>
+                <a href="#" class="cat-view-all">View all →</a>
+            </div>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag history">History</span><span class="card-info">1804–1850s · Global</span></div>
+                    <h4><a href="#">Haitian Revolution's Impact on Abolition Movements</a></h4>
+                    <p>The successful Haitian Revolution (1791–1804) sent shockwaves through colonial powers and inspired abolition movements worldwide, influencing Latin American independence struggles.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">8 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag history">History</span><span class="card-info">1791–1820s · Latin America</span></div>
+                    <h4><a href="#">Toussaint L'Ouverture's Military Tactics</a></h4>
+                    <p>Revolutionary leader Toussaint L'Ouverture's guerrilla warfare strategies influenced subsequent independence movements throughout the Americas, particularly in Latin America.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">9 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag history">History</span><span class="card-info">1860s–1886 · France → USA</span></div>
+                    <h4><a href="#">Haiti's Contribution to the Statue of Liberty</a></h4>
+                    <p>The Haitian Revolution inspired French sculptor Frédéric Auguste Bartholdi's original concept for the Statue of Liberty, initially envisioned as a freed slave woman breaking chains.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">5 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+        </section>
+
+        <!-- CUISINE -->
+        <section class="cat-section" id="cuisine" data-category="cuisine">
+            <div class="cat-section-header">
+                <span class="cat-dot cuisine"></span>
+                <span class="cat-section-name">Cuisine</span>
+                <span class="cat-section-count">28 influences</span>
+                <a href="#" class="cat-view-all">View all →</a>
+            </div>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag cuisine">Cuisine</span><span class="card-info">Traditional–Present · Caribbean</span></div>
+                    <h4><a href="#">Pikliz in Caribbean Hot Sauce Traditions</a></h4>
+                    <p>Haitian pikliz (spicy pickled vegetable relish) has influenced hot sauce and condiment traditions across the Caribbean and diaspora communities worldwide.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">4 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag cuisine">Cuisine</span><span class="card-info">1900s–Present · Diaspora</span></div>
+                    <h4><a href="#">Haitian Diri ak Djon Djon's Global Spread</a></h4>
+                    <p>The unique black mushroom rice dish has inspired similar preparations in Caribbean and African diaspora cuisines, with the distinctive djon djon mushroom becoming sought after internationally.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">3 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag cuisine">Cuisine</span><span class="card-info">1800s–Present · Caribbean</span></div>
+                    <h4><a href="#">Haitian Patties in Caribbean Street Food</a></h4>
+                    <p>Haitian pate kode (spicy meat patties) influenced the development of similar street food items throughout the Caribbean, including Jamaican patties and other regional variations.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">4 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+        </section>
+
+        <!-- ART & CULTURE -->
+        <section class="cat-section" id="art" data-category="art">
+            <div class="cat-section-header">
+                <span class="cat-dot art"></span>
+                <span class="cat-section-name">Art &amp; Culture</span>
+                <span class="cat-section-count">19 influences</span>
+                <a href="#" class="cat-view-all">View all →</a>
+            </div>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag art">Art & Culture</span><span class="card-info">1940s–Present · Global</span></div>
+                    <h4><a href="#">Haitian Naïve Art Movement</a></h4>
+                    <p>The vibrant Haitian naïve art style, emerging in the 1940s, influenced folk art movements worldwide and established Haiti as a significant contributor to contemporary primitive art.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">6 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag art">Art & Culture</span><span class="card-info">1960s–Present · Global</span></div>
+                    <h4><a href="#">Vodou Symbolism in Contemporary Art</a></h4>
+                    <p>Vodou vèvè (ritual symbols) and aesthetic elements have been adopted by contemporary artists globally, influencing symbolic art, street art, and spiritual art movements.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">5 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+        </section>
+
+        <!-- LANGUAGE -->
+        <section class="cat-section" id="language" data-category="language">
+            <div class="cat-section-header">
+                <span class="cat-dot language"></span>
+                <span class="cat-section-name">Language</span>
+                <span class="cat-section-count">15 influences</span>
+                <a href="#" class="cat-view-all">View all →</a>
+            </div>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag language">Language</span><span class="card-info">1800s–Present · Caribbean</span></div>
+                    <h4><a href="#">Creole Words in Caribbean English</a></h4>
+                    <p>Haitian Creole vocabulary has influenced various Caribbean English dialects, with words and expressions spreading through migration and cultural exchange.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">4 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+        </section>
+
+        <!-- SPORTS -->
+        <section class="cat-section" id="sports" data-category="sports">
+            <div class="cat-section-header">
+                <span class="cat-dot sports"></span>
+                <span class="cat-section-name">Sports</span>
+                <span class="cat-section-count">12 influences</span>
+                <a href="#" class="cat-view-all">View all →</a>
+            </div>
+            <article class="influence-card">
+                <div class="card-main">
+                    <div class="card-meta"><span class="cat-tag sports">Sports</span><span class="card-info">1970s–Present · CONCACAF</span></div>
+                    <h4><a href="#">Haitian Soccer Players in CONCACAF</a></h4>
+                    <p>Haitian players have significantly influenced Caribbean and North American soccer development, with many becoming key figures in regional clubs and national teams.</p>
+                </div>
+                <div class="card-side"><span class="card-source-count">5 sources</span><a href="#" class="card-read-link">Read →</a></div>
+            </article>
+        </section>
+
+        <div class="no-results" id="noResults">No influences found matching your search.</div>
+
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Rasin Archive — Preserving Haiti's cultural contributions to the world.</p>
+    <p>Built with respect for Haitian culture and community.</p>
+</footer>
+
+<script>
+    const searchInput    = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const noResults      = document.getElementById('noResults');
+    const catNavLinks    = document.querySelectorAll('.cat-nav-link');
+
+    function filterContent() {
+        const query = searchInput.value.toLowerCase();
+        const cat   = categoryFilter.value;
+        let totalVisible = 0;
+
+        document.querySelectorAll('.cat-section').forEach(section => {
+            const secCat = section.dataset.category;
+            const sectionMatch = !cat || secCat === cat;
+            let anyCard = false;
+
+            section.querySelectorAll('.influence-card').forEach(card => {
+                const matches = sectionMatch && card.textContent.toLowerCase().includes(query);
+                card.style.display = matches ? '' : 'none';
+                if (matches) { anyCard = true; totalVisible++; }
+            });
+
+            section.style.display = sectionMatch && anyCard ? '' : 'none';
+        });
+
+        noResults.style.display = totalVisible === 0 ? 'block' : 'none';
+    }
+
+    // Sidebar nav — click to filter + scroll
+    catNavLinks.forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const filter = link.dataset.filter;
+            categoryFilter.value = filter;
+            catNavLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            filterContent();
+            const target = document.getElementById(filter);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Keep sidebar in sync with dropdown
+    categoryFilter.addEventListener('change', () => {
+        const val = categoryFilter.value;
+        catNavLinks.forEach(l => {
+            l.classList.toggle('active', l.dataset.filter === val);
+        });
+        filterContent();
+    });
+
+    searchInput.addEventListener('input', filterContent);
+</script>
+
+</body>
+</html>

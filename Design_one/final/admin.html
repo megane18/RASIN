@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Rasin Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --ink: #0f0d0a; --paper: #f5f0e8; --warm-white: #faf8f3;
+            --gold: #c9922a; --gold-light: #e8b84b; --red: #b83232;
+            --green: #2a6e4e; --green-light: #6ecfaa;
+            --indigo: #1a1f3a; --indigo-mid: #2d3358;
+            --muted: #7a6f5f; --border: #d9d0be; --border-light: #ece5d6;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Instrument Sans', sans-serif; background: var(--indigo); color: var(--ink); font-size: 15px; line-height: 1.6; min-height: 100vh; }
+
+        /* ======== LOGIN GATE ======== */
+        #loginGate {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--indigo);
+            background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,146,42,0.08) 0%, transparent 70%);
+        }
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+        }
+        .login-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 0.35rem;
+        }
+        .login-logo span { color: var(--red); }
+        .login-subtitle {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(245,240,232,0.35);
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .login-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 2rem;
+        }
+        .login-card h2 {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(245,240,232,0.45);
+            margin-bottom: 1.5rem;
+        }
+        .login-field { margin-bottom: 1rem; }
+        .login-field label {
+            display: block;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(245,240,232,0.4);
+            margin-bottom: 0.4rem;
+        }
+        .login-field input {
+            width: 100%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.75rem 1rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--paper);
+            outline: none;
+            letter-spacing: 0.15em;
+            transition: border-color 0.2s;
+        }
+        .login-field input:focus { border-color: var(--gold); }
+        .login-field input::placeholder { color: rgba(245,240,232,0.2); letter-spacing: 0.05em; }
+        .login-btn {
+            width: 100%;
+            margin-top: 1.25rem;
+            background: var(--gold);
+            border: none;
+            padding: 0.85rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--indigo);
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .login-btn:hover { background: var(--gold-light); }
+        .login-error {
+            display: none;
+            margin-top: 0.75rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.08em;
+            color: #e89898;
+            text-align: center;
+        }
+        .login-error.show { display: block; }
+
+        /* ======== ADMIN SHELL ======== */
+        #adminShell { display: none; background: var(--paper); min-height: 100vh; }
+
+        /* ---- ADMIN HEADER ---- */
+        .admin-header {
+            background: var(--indigo);
+            border-bottom: 3px solid var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .admin-header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .admin-logo-group { display: flex; align-items: baseline; gap: 0.75rem; }
+        .admin-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        .admin-logo span { color: var(--red); }
+        .admin-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(201,146,42,0.4);
+            padding: 0.15rem 0.5rem;
+        }
+        .admin-header-right { display: flex; align-items: center; gap: 1.5rem; }
+        .admin-user {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            color: rgba(245,240,232,0.4);
+            text-transform: uppercase;
+        }
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 0.35rem 0.85rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(245,240,232,0.5);
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .logout-btn:hover { border-color: var(--red); color: #e89898; }
+
+        /* ---- STATS BAR ---- */
+        .stats-bar {
+            background: var(--indigo-mid);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .stats-bar-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0;
+        }
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1.5rem;
+            border-right: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .stat-pill:hover, .stat-pill.active { background: rgba(255,255,255,0.04); }
+        .stat-pill:first-child { padding-left: 0; }
+        .stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gold-light);
+            line-height: 1;
+        }
+        .stat-info { display: flex; flex-direction: column; gap: 0.1rem; }
+        .stat-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(245,240,232,0.4);
+        }
+        .stat-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            display: inline-block; margin-right: 0.25rem;
+        }
+        .dot-pending  { background: var(--gold); }
+        .dot-approved { background: var(--green-light); }
+        .dot-rejected { background: #e89898; }
+        .dot-all      { background: rgba(245,240,232,0.3); }
+
+        /* ---- MAIN LAYOUT ---- */
+        .admin-body {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* ---- SIDEBAR FILTERS ---- */
+        .filter-sidebar {
+            position: sticky;
+            top: 115px;
+        }
+        .sidebar-section { margin-bottom: 1.5rem; }
+        .sidebar-section-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.6rem;
+        }
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            background: transparent;
+            border: none;
+            border-left: 2px solid transparent;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.88rem;
+            color: var(--muted);
+            cursor: pointer;
+            text-align: left;
+            transition: color 0.15s, border-color 0.15s, background 0.15s;
+            margin-left: -2px;
+        }
+        .filter-btn:hover { color: var(--ink); background: rgba(201,146,42,0.05); }
+        .filter-btn.active { color: var(--ink); border-left-color: var(--gold); background: rgba(201,146,42,0.06); font-weight: 600; }
+        .filter-count {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            background: var(--border-light);
+            color: var(--muted);
+            padding: 0.1rem 0.4rem;
+        }
+        .filter-btn.active .filter-count { background: rgba(201,146,42,0.15); color: var(--gold); }
+
+        .search-box {
+            width: 100%;
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.85rem;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.88rem;
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus { border-color: var(--gold); }
+        .search-box::placeholder { color: var(--muted); }
+
+        /* ---- SUBMISSION LIST ---- */
+        .submissions-area {}
+
+        .list-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .list-title {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .list-count { color: var(--ink); font-weight: 500; }
+
+        /* SUBMISSION CARD */
+        .submission-card {
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            margin-bottom: 1px;
+            overflow: hidden;
+            transition: border-color 0.15s;
+        }
+        .submission-card:hover { border-color: var(--gold); }
+        .submission-card.expanded { border-color: var(--gold); }
+
+        .card-summary {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+        }
+
+        /* Status badge */
+        .status-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.5rem;
+            text-align: center;
+        }
+        .status-badge.pending  { background: rgba(201,146,42,0.15); color: var(--gold); }
+        .status-badge.approved { background: rgba(110,207,170,0.15); color: var(--green); }
+        .status-badge.rejected { background: rgba(184,50,50,0.1);    color: var(--red); }
+        .status-badge.reviewing { background: rgba(26,31,58,0.1); color: var(--indigo); }
+        .status-badge.needs_info { background: rgba(201,146,42,0.08); color: var(--muted); }
+
+        .card-main-info {}
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 0.25rem;
+        }
+        .card-meta-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .card-meta-item {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+        }
+        .cat-pill {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+        }
+        .cat-pill.music    { background: #1a2f2a; color: #6ecfaa; }
+        .cat-pill.history  { background: #2f1a1a; color: #e89898; }
+        .cat-pill.cuisine  { background: #2f2a1a; color: #e8cc88; }
+        .cat-pill.art      { background: #1a1a2f; color: #a8a8e8; }
+        .cat-pill.language { background: #2a1f2a; color: #d8a8d8; }
+        .cat-pill.sports   { background: #1a2a1a; color: #88cc88; }
+        .cat-pill.literature { background: #1f2a2a; color: #88d8d8; }
+        .cat-pill.science  { background: #2a2a1a; color: #d8d888; }
+        .cat-pill.other    { background: #2a2a2a; color: #aaaaaa; }
+
+        .card-toggle {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            transition: transform 0.2s;
+            user-select: none;
+        }
+        .submission-card.expanded .card-toggle { transform: rotate(180deg); }
+
+        /* EXPANDED DETAIL */
+        .card-detail {
+            display: none;
+            border-top: 1px solid var(--border-light);
+        }
+        .submission-card.expanded .card-detail { display: block; }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        .detail-section {
+            padding: 1.25rem 1.5rem;
+            border-right: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .detail-section:nth-child(2n) { border-right: none; }
+        .detail-section.full { grid-column: 1 / -1; border-right: none; }
+        .detail-section:last-child { border-bottom: none; }
+
+        .detail-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.4rem;
+        }
+        .detail-value {
+            font-size: 0.88rem;
+            color: var(--ink);
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        /* Sources in detail */
+        .source-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .source-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            font-size: 0.85rem;
+        }
+        .source-type-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: var(--indigo);
+            color: var(--gold-light);
+            padding: 0.15rem 0.5rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        /* REVIEW ACTIONS */
+        .review-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: var(--paper);
+            border-top: 1px solid var(--border);
+        }
+        .review-actions-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-right: 0.25rem;
+        }
+        .action-btn {
+            padding: 0.5rem 1.1rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+        }
+        .action-btn.approve {
+            background: rgba(110,207,170,0.15);
+            color: var(--green);
+            border-color: rgba(110,207,170,0.3);
+        }
+        .action-btn.approve:hover { background: var(--green-light); color: var(--indigo); border-color: var(--green-light); }
+        .action-btn.reject {
+            background: rgba(184,50,50,0.08);
+            color: var(--red);
+            border-color: rgba(184,50,50,0.2);
+        }
+        .action-btn.reject:hover { background: var(--red); color: #fff; border-color: var(--red); }
+        .action-btn.needs-info {
+            background: transparent;
+            color: var(--muted);
+            border-color: var(--border);
+        }
+        .action-btn.needs-info:hover { border-color: var(--gold); color: var(--gold); }
+
+        .reviewer-notes-wrap { flex: 1; }
+        .reviewer-notes {
+            width: 100%;
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            padding: 0.5rem 0.75rem;
+            font-family: 'Instrument Sans', sans-serif;
+            font-size: 0.82rem;
+            color: var(--ink);
+            outline: none;
+            resize: none;
+            transition: border-color 0.2s;
+            height: 36px;
+        }
+        .reviewer-notes:focus { border-color: var(--gold); height: 72px; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 0;
+            display: none;
+        }
+        .empty-state.show { display: block; }
+        .empty-state p { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; }
+
+        @media (max-width: 900px) {
+            .admin-body { grid-template-columns: 1fr; }
+            .filter-sidebar { position: static; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .detail-section { border-right: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ======== LOGIN GATE ======== -->
+<div id="loginGate">
+    <div class="login-box">
+        <div class="login-logo">HT <span>RASIN</span></div>
+        <div class="login-subtitle">Archive Administration</div>
+        <div class="login-card">
+            <h2>Admin Access</h2>
+            <div class="login-field">
+                <label>Password</label>
+                <input type="password" id="passwordInput" placeholder="Enter admin password" autocomplete="current-password">
+            </div>
+            <button class="login-btn" id="loginBtn">Unlock Dashboard →</button>
+            <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ======== ADMIN SHELL ======== -->
+<div id="adminShell">
+
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <div class="admin-logo-group">
+                <a href="index.html" class="admin-logo">HT <span>RASIN</span></a>
+                <span class="admin-badge">Admin</span>
+            </div>
+            <div class="admin-header-right">
+                <span class="admin-user">Signed in as Admin</span>
+                <button class="logout-btn" id="logoutBtn">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stats-bar-inner">
+            <div class="stat-pill active" data-filter="all">
+                <div class="stat-num" id="count-all">0</div>
+                <div class="stat-info">
+                    <span class="stat-label"><span class="stat-dot dot-all"></span>All</span>
+                </div>
+            </div>
+            <div class="stat-pill" data-filter="pending">
+                <div class="stat-num" id="count-pending">0</div>
+                <div class="stat-info">
+                    <span class="stat-label"><span class="stat-dot dot-pending"></span>Pending</span>
+                </div>
+            </div>
+            <div class="stat-pill" data-filter="approved">
+                <div class="stat-num" id="count-approved">0</div>
+                <div class="stat-info">
+                    <span class="stat-label"><span class="stat-dot dot-approved"></span>Approved</span>
+                </div>
+            </div>
+            <div class="stat-pill" data-filter="rejected">
+                <div class="stat-num" id="count-rejected">0</div>
+                <div class="stat-info">
+                    <span class="stat-label"><span class="stat-dot dot-rejected"></span>Rejected</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-body">
+
+        <!-- SIDEBAR -->
+        <aside class="filter-sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-section-label">Search</div>
+                <input type="text" class="search-box" id="adminSearch" placeholder="Search submissions…">
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-label">Status</div>
+                <button class="filter-btn active" data-filter="all">All <span class="filter-count" id="fc-all">0</span></button>
+                <button class="filter-btn" data-filter="pending">Pending <span class="filter-count" id="fc-pending">0</span></button>
+                <button class="filter-btn" data-filter="reviewing">Reviewing <span class="filter-count" id="fc-reviewing">0</span></button>
+                <button class="filter-btn" data-filter="approved">Approved <span class="filter-count" id="fc-approved">0</span></button>
+                <button class="filter-btn" data-filter="rejected">Rejected <span class="filter-count" id="fc-rejected">0</span></button>
+                <button class="filter-btn" data-filter="needs_info">Needs Info <span class="filter-count" id="fc-needs_info">0</span></button>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-label">Category</div>
+                <button class="filter-btn active-cat" data-cat="">All Categories</button>
+                <button class="filter-btn" data-cat="music">Music</button>
+                <button class="filter-btn" data-cat="history">History</button>
+                <button class="filter-btn" data-cat="cuisine">Cuisine</button>
+                <button class="filter-btn" data-cat="art">Art & Culture</button>
+                <button class="filter-btn" data-cat="language">Language</button>
+                <button class="filter-btn" data-cat="sports">Sports</button>
+                <button class="filter-btn" data-cat="literature">Literature</button>
+                <button class="filter-btn" data-cat="science">Science</button>
+            </div>
+        </aside>
+
+        <!-- MAIN LIST -->
+        <div class="submissions-area">
+            <div class="list-header">
+                <span class="list-title">Showing <span class="list-count" id="visibleCount">0</span> submissions</span>
+            </div>
+            <div id="submissionsList"></div>
+            <div class="empty-state" id="emptyState">
+                <p>No submissions match your filters.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // PASSWORD — SHA-256 hash of your password goes here.
+    // To generate: https://emn178.github.io/online-tools/sha256.html
+    // Default password is: rasin2026  (change this before going live)
+    // ============================================================
+    const ADMIN_HASH = '8723ecbe329a5258775109cf40b0b607e3aa303b5fe1729031c52516f12887db';
+
+    // ---- SHA-256 via Web Crypto API ----
+    async function sha256(str) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // ---- Session persistence ----
+    const SESSION_KEY = 'rasin_admin_auth';
+    if (sessionStorage.getItem(SESSION_KEY) === 'true') unlockAdmin();
+
+    document.getElementById('loginBtn').addEventListener('click', attemptLogin);
+    document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+
+    async function attemptLogin() {
+        const input = document.getElementById('passwordInput').value;
+        const hash  = await sha256(input);
+        if (hash === ADMIN_HASH) {
+            sessionStorage.setItem(SESSION_KEY, 'true');
+            unlockAdmin();
+        } else {
+            document.getElementById('loginError').classList.add('show');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordInput').focus();
+        }
+    }
+
+    function unlockAdmin() {
+        document.getElementById('loginGate').style.display  = 'none';
+        document.getElementById('adminShell').style.display = 'block';
+        document.body.style.background = 'var(--paper)';
+        renderAll();
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        sessionStorage.removeItem(SESSION_KEY);
+        location.reload();
+    });
+
+    // ============================================================
+    // MOCK DATA — replace with real API fetch when backend is ready
+    // ============================================================
+    let submissions = [
+        {
+            id: '001',
+            title: "Cadence Rampa's Evolution into Zouk",
+            category: 'music',
+            summary: 'Haitian cadence rampa laid the rhythmic groundwork for Caribbean zouk music.',
+            description: "In the 1950s and 1960s, Haitian musicians Webert Sicot and Nemours Jean-Baptiste revolutionized Haitian music by creating cadence rampa. This style traveled to Dominica, became cadence-lypso, and then evolved into Guadeloupe's zouk in the 1980s.",
+            startPeriod: '1950s', endPeriod: '1980s',
+            geographicFlow: 'Haiti → Dominica → Guadeloupe → Worldwide',
+            keyFigures: 'Webert Sicot, Nemours Jean-Baptiste, Gordon Henderson',
+            misconceptions: "Zouk is often credited as purely Guadeloupean without acknowledging its Haitian roots.",
+            whyItMatters: "Documents Haiti's central role in Caribbean music evolution.",
+            submitterName: 'Marcus J.', submitterEmail: 'marcus@example.com',
+            submitterRelation: 'Family descendant of Webert Sicot',
+            status: 'pending',
+            sources: [
+                { type: 'recording', citation: 'Webert Sicot — "Cadence Rampa Volume 2" (1962, Marc Records)', url: '' },
+                { type: 'academic',  citation: 'Guilbault, Jocelyne. "Zouk: World Music in the West Indies" (University of Chicago Press, 1993)', url: 'https://press.uchicago.edu' }
+            ],
+            reviewerNotes: '',
+            createdAt: '2026-02-18T14:22:00Z'
+        },
+        {
+            id: '002',
+            title: "Haitian Vodou Rhythms in Early Jazz",
+            category: 'music',
+            summary: 'Vodou ceremonial rhythms traveled from Haiti to New Orleans and influenced jazz development.',
+            description: "Through Haitian migration to New Orleans in the early 19th century, Vodou ceremonial rhythms introduced polyrhythmic structures and syncopated patterns that became foundational to jazz.",
+            startPeriod: '1800s', endPeriod: '1920s',
+            geographicFlow: 'Haiti → New Orleans → USA',
+            keyFigures: '',
+            misconceptions: "Jazz origins are often traced solely to African American Southern traditions without acknowledging Haitian Creole influences.",
+            whyItMatters: "Broadens the understanding of jazz roots.",
+            submitterName: 'Claudette R.', submitterEmail: 'claudette@example.com',
+            submitterRelation: 'Researcher in Caribbean music history',
+            status: 'pending',
+            sources: [
+                { type: 'book',     citation: 'Sublette, Ned. "The World That Made New Orleans" (2008)', url: '' },
+                { type: 'article',  citation: '"Congo Square and the Haitian Influence on New Orleans Music" — NOLA.com (2019)', url: 'https://nola.com' }
+            ],
+            reviewerNotes: '',
+            createdAt: '2026-02-20T09:11:00Z'
+        },
+        {
+            id: '003',
+            title: "Haiti's Contribution to the Statue of Liberty Concept",
+            category: 'history',
+            summary: "The Haitian Revolution inspired Bartholdi's original concept of a freed slave for the Statue of Liberty.",
+            description: "French sculptor Frédéric Auguste Bartholdi originally envisioned the Statue of Liberty as a monument to emancipation inspired by Haiti's revolution, before the design was shifted to its current form.",
+            startPeriod: '1860s', endPeriod: '1886',
+            geographicFlow: 'Haiti → France → USA',
+            keyFigures: 'Frédéric Auguste Bartholdi',
+            misconceptions: "The Statue of Liberty is almost never discussed in relation to Haitian emancipation despite strong historical links.",
+            whyItMatters: "Connects Haitian liberation to one of the world's most recognized symbols of freedom.",
+            submitterName: 'Jean-Paul M.', submitterEmail: 'jeanpaul@example.com',
+            submitterRelation: 'History professor',
+            status: 'approved',
+            sources: [
+                { type: 'academic',  citation: 'Popkin, Jeremy. "You Are All Free: The Haitian Revolution and the Abolition of Slavery" (2010)', url: '' },
+                { type: 'article',   citation: '"The Black Statue of Liberty" — The New York Times (2000)', url: 'https://nytimes.com' },
+                { type: 'archive',   citation: 'Bartholdi letter to Laboulaye, 1870, Archives Nationales de France', url: '' }
+            ],
+            reviewerNotes: 'Strong sourcing. Published.',
+            createdAt: '2026-02-10T16:45:00Z'
+        },
+        {
+            id: '004',
+            title: "Pikliz Influence on Caribbean Hot Sauce Traditions",
+            category: 'cuisine',
+            summary: 'Haitian pikliz shaped condiment traditions across Caribbean and diaspora communities.',
+            description: "Haitian pikliz — spicy pickled vegetables in vinegar — has influenced condiment culture throughout the Caribbean diaspora, with variations appearing in Dominican, Cuban, and Jamaican cuisines.",
+            startPeriod: 'Traditional', endPeriod: 'Present',
+            geographicFlow: 'Haiti → Caribbean → North American Diaspora',
+            keyFigures: '',
+            misconceptions: '',
+            whyItMatters: 'Documents the spread of Haitian food culture.',
+            submitterName: 'Sophie B.', submitterEmail: 'sophie@example.com',
+            submitterRelation: 'Haitian-American chef',
+            status: 'needs_info',
+            sources: [
+                { type: 'oral', citation: 'Interview with Chef Nadège Pierre, Port-au-Prince (2024)', url: '' }
+            ],
+            reviewerNotes: 'Only 1 source provided. Requested a second source from submitter.',
+            createdAt: '2026-02-22T11:30:00Z'
+        },
+        {
+            id: '005',
+            title: "Haitian Naïve Art Movement's Global Influence",
+            category: 'art',
+            summary: 'The Haitian naïve art movement of the 1940s influenced folk art worldwide.',
+            description: "Emerging from the Centre d'Art in Port-au-Prince in the 1940s, Haitian naïve art gained international recognition and influenced folk and outsider art movements globally.",
+            startPeriod: '1940s', endPeriod: 'Present',
+            geographicFlow: 'Haiti → USA → Europe → Global',
+            keyFigures: 'Hector Hyppolite, Philomé Obin, DeWitt Peters',
+            misconceptions: "Often treated as a curiosity rather than a serious art movement that influenced global folk art.",
+            whyItMatters: 'Positions Haiti as an originator rather than recipient of artistic movements.',
+            submitterName: 'Miriam T.', submitterEmail: 'miriam@example.com',
+            submitterRelation: 'Art historian',
+            status: 'reviewing',
+            sources: [
+                { type: 'book',      citation: 'Rodman, Selden. "Where Art Is Joy: Haitian Art" (1988)', url: '' },
+                { type: 'academic',  citation: 'Daut, Marlene. "Tropics of Haiti" (2015)', url: '' }
+            ],
+            reviewerNotes: 'Strong entry — checking sources before approving.',
+            createdAt: '2026-02-21T08:00:00Z'
+        }
+    ];
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let activeFilter = 'all';
+    let activeCat    = '';
+    let searchQuery  = '';
+
+    // ============================================================
+    // RENDER
+    // ============================================================
+    function renderAll() {
+        updateCounts();
+        renderList();
+    }
+
+    function updateCounts() {
+        const counts = { all: submissions.length, pending: 0, reviewing: 0, approved: 0, rejected: 0, needs_info: 0 };
+        submissions.forEach(s => { if (counts[s.status] !== undefined) counts[s.status]++; });
+        Object.keys(counts).forEach(k => {
+            const el = document.getElementById('count-' + k);
+            const fc = document.getElementById('fc-' + k);
+            if (el) el.textContent = counts[k];
+            if (fc) fc.textContent = counts[k];
+        });
+    }
+
+    function getFiltered() {
+        return submissions.filter(s => {
+            const matchStatus = activeFilter === 'all' || s.status === activeFilter;
+            const matchCat    = !activeCat || s.category === activeCat;
+            const matchSearch = !searchQuery ||
+                s.title.toLowerCase().includes(searchQuery) ||
+                s.summary.toLowerCase().includes(searchQuery) ||
+                s.submitterName.toLowerCase().includes(searchQuery);
+            return matchStatus && matchCat && matchSearch;
+        });
+    }
+
+    function renderList() {
+        const filtered = getFiltered();
+        const list = document.getElementById('submissionsList');
+        const empty = document.getElementById('emptyState');
+        document.getElementById('visibleCount').textContent = filtered.length;
+
+        list.innerHTML = '';
+        empty.classList.toggle('show', filtered.length === 0);
+
+        filtered.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'submission-card';
+            card.id = 'card-' + s.id;
+            card.innerHTML = buildCard(s);
+            list.appendChild(card);
+
+            // Toggle expand
+            card.querySelector('.card-summary').addEventListener('click', () => {
+                card.classList.toggle('expanded');
+            });
+
+            // Action buttons
+            card.querySelector('.action-btn.approve')?.addEventListener('click', e => {
+                e.stopPropagation();
+                setStatus(s.id, 'approved', card);
+            });
+            card.querySelector('.action-btn.reject')?.addEventListener('click', e => {
+                e.stopPropagation();
+                setStatus(s.id, 'rejected', card);
+            });
+            card.querySelector('.action-btn.needs-info')?.addEventListener('click', e => {
+                e.stopPropagation();
+                setStatus(s.id, 'needs_info', card);
+            });
+        });
+    }
+
+    function buildCard(s) {
+        const date = new Date(s.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const sourcesHTML = s.sources.map((src, i) => `
+            <div class="source-row">
+                <span class="source-type-badge">${src.type}</span>
+                <span>${src.citation}${src.url ? ` — <a href="${src.url}" target="_blank" style="color:var(--gold);font-size:0.8rem;">${src.url}</a>` : ''}</span>
+            </div>`).join('');
+
+        return `
+        <div class="card-summary">
+            <span class="status-badge ${s.status}">${s.status.replace('_', ' ')}</span>
+            <div class="card-main-info">
+                <div class="card-title">${s.title}</div>
+                <div class="card-meta-row">
+                    <span class="cat-pill ${s.category}">${s.category}</span>
+                    <span class="card-meta-item">By ${s.submitterName}</span>
+                    <span class="card-meta-item">${date}</span>
+                    <span class="card-meta-item">${s.sources.length} source${s.sources.length !== 1 ? 's' : ''}</span>
+                </div>
+            </div>
+            <span class="card-toggle">▾</span>
+        </div>
+        <div class="card-detail">
+            <div class="detail-grid">
+                <div class="detail-section full">
+                    <div class="detail-label">Summary</div>
+                    <div class="detail-value">${s.summary}</div>
+                </div>
+                <div class="detail-section full">
+                    <div class="detail-label">Full Description</div>
+                    <div class="detail-value">${s.description}</div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Timeline</div>
+                    <div class="detail-value">${s.startPeriod}${s.endPeriod ? ' – ' + s.endPeriod : ''}</div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Geographic Flow</div>
+                    <div class="detail-value">🇭🇹 → ${s.geographicFlow}</div>
+                </div>
+                ${s.keyFigures ? `
+                <div class="detail-section full">
+                    <div class="detail-label">Key Figures</div>
+                    <div class="detail-value">${s.keyFigures}</div>
+                </div>` : ''}
+                ${s.misconceptions ? `
+                <div class="detail-section full">
+                    <div class="detail-label">Common Misconceptions</div>
+                    <div class="detail-value">${s.misconceptions}</div>
+                </div>` : ''}
+                <div class="detail-section full">
+                    <div class="detail-label">Sources (${s.sources.length})</div>
+                    <div class="source-list">${sourcesHTML}</div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-label">Submitted By</div>
+                    <div class="detail-value">${s.submitterName}<br><a href="mailto:${s.submitterEmail}" style="color:var(--gold);font-size:0.82rem;">${s.submitterEmail}</a></div>
+                </div>
+                ${s.submitterRelation ? `
+                <div class="detail-section">
+                    <div class="detail-label">Their Connection</div>
+                    <div class="detail-value">${s.submitterRelation}</div>
+                </div>` : ''}
+            </div>
+            <div class="review-actions">
+                <span class="review-actions-label">Review</span>
+                <button class="action-btn approve">✓ Approve</button>
+                <button class="action-btn reject">✕ Reject</button>
+                <button class="action-btn needs-info">? Needs Info</button>
+                <div class="reviewer-notes-wrap">
+                    <textarea class="reviewer-notes" placeholder="Internal notes…" id="notes-${s.id}">${s.reviewerNotes}</textarea>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function setStatus(id, newStatus, card) {
+        const s = submissions.find(x => x.id === id);
+        if (!s) return;
+        s.status = newStatus;
+        s.reviewerNotes = document.getElementById('notes-' + id)?.value || s.reviewerNotes;
+        card.innerHTML = buildCard(s);
+        card.classList.add('expanded');
+        // Re-attach listeners
+        card.querySelector('.card-summary').addEventListener('click', () => card.classList.toggle('expanded'));
+        card.querySelector('.action-btn.approve')?.addEventListener('click', e => { e.stopPropagation(); setStatus(id, 'approved', card); });
+        card.querySelector('.action-btn.reject')?.addEventListener('click', e => { e.stopPropagation(); setStatus(id, 'rejected', card); });
+        card.querySelector('.action-btn.needs-info')?.addEventListener('click', e => { e.stopPropagation(); setStatus(id, 'needs_info', card); });
+        updateCounts();
+    }
+
+    // ============================================================
+    // FILTER / SEARCH LISTENERS
+    // ============================================================
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeFilter = btn.dataset.filter;
+            document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.stat-pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelector(`.stat-pill[data-filter="${activeFilter}"]`)?.classList.add('active');
+            renderList();
+        });
+    });
+
+    document.querySelectorAll('.stat-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            activeFilter = pill.dataset.filter;
+            document.querySelectorAll('.stat-pill').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+            pill.classList.add('active');
+            document.querySelector(`.filter-btn[data-filter="${activeFilter}"]`)?.classList.add('active');
+            renderList();
+        });
+    });
+
+    document.querySelectorAll('.filter-btn[data-cat]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeCat = btn.dataset.cat;
+            document.querySelectorAll('.filter-btn[data-cat]').forEach(b => b.classList.remove('active-cat', 'active'));
+            btn.classList.add('active');
+            renderList();
+        });
+    });
+
+    document.getElementById('adminSearch').addEventListener('input', e => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        renderList();
+    });
+</script>
+</body>
+</html>

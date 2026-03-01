@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rasin — Haitian Cultural Influence Archive</title>
+    <meta name="description" content="Documenting and preserving Haitian cultural influence worldwide. From music to history, discover Haiti's contributions that shaped global culture.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --ink: #0f0d0a;
+            --paper: #f5f0e8;
+            --warm-white: #faf8f3;
+            --gold: #c9922a;
+            --gold-light: #e8b84b;
+            --red: #b83232;
+            --indigo: #1a1f3a;
+            --indigo-mid: #2d3358;
+            --muted: #7a6f5f;
+            --border: #d9d0be;
+            --border-light: #ece5d6;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Instrument Sans', sans-serif;
+            background-color: var(--paper);
+            color: var(--ink);
+            font-size: 15px;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(26,31,58,0.06) 0%, transparent 70%);
+        }
+
+        /* ---- HEADER ---- */
+        header {
+            background: var(--indigo);
+            color: var(--paper);
+            padding: 0;
+            border-bottom: 3px solid var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .logo-link {
+            text-decoration: none;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            color: var(--gold-light);
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--red);
+        }
+
+        .tagline-header {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            color: rgba(245,240,232,0.45);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-left: 1px solid rgba(245,240,232,0.2);
+            padding-left: 1rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        nav a {
+            color: rgba(245,240,232,0.7);
+            text-decoration: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.4rem 0.9rem;
+            border-radius: 2px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--gold-light);
+            background: rgba(201,146,42,0.12);
+        }
+
+        /* ---- HERO ---- */
+        .hero {
+            background: var(--indigo);
+            color: var(--paper);
+            padding: 5rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: 'RASIN';
+            position: absolute;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(8rem, 20vw, 18rem);
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.03);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .hero-inner {
+            max-width: 760px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-flag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .hero-flag::before, .hero-flag::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: var(--gold);
+            opacity: 0.5;
+        }
+
+        .hero h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 300;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .hero h2 em {
+            font-style: italic;
+            color: var(--gold-light);
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: rgba(245,240,232,0.65);
+            max-width: 540px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.75;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 0.85rem 2.2rem;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold-light);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background 0.25s, color 0.25s;
+        }
+
+        .cta-btn:hover {
+            background: var(--gold);
+            color: var(--indigo);
+        }
+
+        /* ---- LAYOUT ---- */
+        .site-body {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 220px 1fr 240px;
+            gap: 3rem;
+        }
+
+        /* ---- SIDEBAR ---- */
+        .sidebar-card {
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-card h3 {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .creator-avatar {
+            width: 52px;
+            height: 52px;
+            background: var(--indigo);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .creator-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+        }
+
+        .creator-role {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .creator-bio {
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            color: var(--ink);
+            font-size: 0.82rem;
+            padding: 0.4rem 0.5rem;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .contact-link:hover {
+            color: var(--gold);
+            background: rgba(201,146,42,0.08);
+        }
+
+        .contact-icon {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            width: 18px;
+        }
+
+        .about-text {
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .about-text + .about-text {
+            margin-top: 0.6rem;
+        }
+
+        /* ---- STATS BOX (right) ---- */
+        .stats-card {
+            background: var(--indigo);
+            color: var(--paper);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-cell {
+            background: var(--indigo);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-cell:first-child {
+            grid-column: 1 / -1;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: var(--gold-light);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(245,240,232,0.45);
+        }
+
+        /* ---- NEWS ---- */
+        .news-item {
+            padding: 0.9rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .news-item:last-child { border-bottom: none; }
+
+        .news-date {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .news-title {
+            font-size: 0.82rem;
+            line-height: 1.45;
+            margin-bottom: 0.2rem;
+        }
+
+        .news-source {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gold);
+            letter-spacing: 0.06em;
+        }
+
+        /* ---- MAIN CONTENT ---- */
+        .section-heading {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-heading::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ---- CATEGORIES GRID ---- */
+        .cats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+
+        .cat-cell {
+            background: var(--warm-white);
+            padding: 1.25rem 1rem;
+            text-decoration: none;
+            color: var(--ink);
+            display: block;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .cat-cell:hover {
+            background: var(--indigo);
+            color: var(--paper);
+        }
+
+        .cat-cell:hover .cat-icon { color: var(--gold-light); }
+        .cat-cell:hover .cat-count { color: rgba(245,240,232,0.5); }
+
+        .cat-icon {
+            font-size: 1.3rem;
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--gold);
+            transition: color 0.2s;
+        }
+
+        .cat-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .cat-count {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--muted);
+            letter-spacing: 0.06em;
+            transition: color 0.2s;
+        }
+
+        /* ---- INFLUENCE CARDS ---- */
+        .influence-card {
+            border-bottom: 1px solid var(--border-light);
+            padding: 1.75rem 0;
+        }
+
+        .influence-card:first-of-type { 
+            border-top: 1px solid var(--border-light); 
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .cat-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            background: var(--indigo);
+            color: var(--gold-light);
+        }
+
+        .cat-tag.music { background: #1a2f2a; color: #6ecfaa; }
+        .cat-tag.history { background: #2f1a1a; color: #e89898; }
+        .cat-tag.cuisine { background: #2f2a1a; color: #e8cc88; }
+
+        .card-info {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--muted);
+            letter-spacing: 0.04em;
+        }
+
+        .influence-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.45rem;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 0.65rem;
+            letter-spacing: -0.01em;
+        }
+
+        .influence-card h3 a {
+            color: var(--ink);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .influence-card h3 a:hover { color: var(--gold); }
+
+        .influence-card p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.75;
+            max-width: 640px;
+        }
+
+        .view-all {
+            display: inline-block;
+            margin-top: 2rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-decoration: none;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 2px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .view-all:hover { color: var(--ink); border-color: var(--ink); }
+
+        /* ---- FOOTER ---- */
+        footer {
+            background: var(--indigo);
+            color: rgba(245,240,232,0.45);
+            padding: 2.5rem 2rem;
+            margin-top: 4rem;
+            text-align: center;
+            border-top: 1px solid var(--gold);
+        }
+
+        footer p {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+        }
+
+        footer p + p { margin-top: 0.4rem; }
+
+        @media (max-width: 1024px) {
+            .site-body { grid-template-columns: 1fr; }
+            .cats-grid { grid-template-columns: repeat(2, 1fr); }
+            .tagline-header { display: none; }
+        }
+
+        @media (max-width: 600px) {
+            .hero { padding: 3rem 1.5rem 3rem; }
+            .cats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-inner">
+            <div class="logo-group">
+                <a href="index.html" class="logo-link">
+                    <div class="logo">HT <span>RASIN</span></div>
+                </a>
+                <span class="tagline-header">Haitian Cultural Influence Archive</span>
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="browse.html">Browse</a>
+                <a href="about.html">About</a>
+                <a href="submit.html">Submit</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-flag">Est. 2024 — An Open Archive</div>
+            <h2>Preserving Haiti's<br><em>Cultural Legacy</em></h2>
+            <p>From revolutionary movements to musical innovations, Haitian influence has shaped global culture in profound ways. Help us document and preserve these contributions for future generations.</p>
+            <a href="submit.html" class="cta-btn">Submit an Influence</a>
+        </div>
+    </section>
+
+    <div class="site-body">
+
+        <!-- LEFT SIDEBAR -->
+        <aside>
+            <div class="sidebar-card">
+                <div class="creator-avatar">◆</div>
+                <div class="creator-name">Megane Alexis</div>
+                <div class="creator-role">Archivist & Developer</div>
+                <p class="creator-bio">Documenting Haiti's cultural legacy and global influence through research and technology.</p>
+            </div>
+
+            <div class="sidebar-card">
+                <h3>Contact</h3>
+                <div class="contact-links">
+                    <a href="mailto:contact@rasinarchive.org" class="contact-link">
+                        <span class="contact-icon">@</span>Email
+                    </a>
+                    <a href="https://twitter.com/rasin" class="contact-link" target="_blank">
+                        <span class="contact-icon">◎</span>Twitter
+                    </a>
+                    <a href="https://github.com/rasin" class="contact-link" target="_blank">
+                        <span class="contact-icon">◆</span>GitHub
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-card">
+                <h3>About This Project</h3>
+                <p class="about-text">Rasin is a community-driven archive documenting Haitian cultural contributions worldwide.</p>
+                <p class="about-text">Every entry is researched, sourced, and verified to preserve Haiti's legacy with accuracy and respect.</p>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main>
+            <h2 class="section-heading">Browse by Category</h2>
+            <div class="cats-grid">
+                <a href="browse.html#music" class="cat-cell">
+                    <span class="cat-icon">♪♫</span>
+                    <span class="cat-name">Music</span>
+                    <span class="cat-count">47 influences</span>
+                </a>
+                <a href="browse.html#history" class="cat-cell">
+                    <span class="cat-icon">⌛</span>
+                    <span class="cat-name">History</span>
+                    <span class="cat-count">32 influences</span>
+                </a>
+                <a href="browse.html#cuisine" class="cat-cell">
+                    <span class="cat-icon">⚑</span>
+                    <span class="cat-name">Cuisine</span>
+                    <span class="cat-count">28 influences</span>
+                </a>
+                <a href="browse.html#art" class="cat-cell">
+                    <span class="cat-icon">◆◇</span>
+                    <span class="cat-name">Art & Culture</span>
+                    <span class="cat-count">19 influences</span>
+                </a>
+                <a href="browse.html#language" class="cat-cell">
+                    <span class="cat-icon">◎</span>
+                    <span class="cat-name">Language</span>
+                    <span class="cat-count">15 influences</span>
+                </a>
+                <a href="browse.html#sports" class="cat-cell">
+                    <span class="cat-icon">⚈</span>
+                    <span class="cat-name">Sports</span>
+                    <span class="cat-count">12 influences</span>
+                </a>
+            </div>
+
+            <h2 class="section-heading">Recent Influences</h2>
+
+            <article class="influence-card">
+                <div class="card-meta">
+                    <span class="cat-tag music">Music</span>
+                    <span class="card-info">1950s–1980s · Caribbean · 5 sources</span>
+                </div>
+                <h3><a href="influence.html">Cadence Rampa's Evolution into Zouk</a></h3>
+                <p>Webert Sicot's cadence rampa (1950s–60s Haiti) traveled through the Caribbean, influencing Dominica's cadence-lypso in the 1970s, which then evolved into Guadeloupe's zouk in the 1980s. This musical lineage represents one of Haiti's most significant yet underrecognized cultural exports.</p>
+            </article>
+
+            <article class="influence-card">
+                <div class="card-meta">
+                    <span class="cat-tag history">History</span>
+                    <span class="card-info">1804–1850s · Global · 8 sources</span>
+                </div>
+                <h3><a href="#">Haitian Revolution's Impact on Abolition Movements</a></h3>
+                <p>The successful Haitian Revolution (1791–1804) sent shockwaves through colonial powers and inspired abolition movements worldwide. Its influence on Latin American independence movements and the broader fight against slavery is often minimized in historical narratives.</p>
+            </article>
+
+            <article class="influence-card">
+                <div class="card-meta">
+                    <span class="cat-tag cuisine">Cuisine</span>
+                    <span class="card-info">Traditional–Present · Caribbean · 4 sources</span>
+                </div>
+                <h3><a href="#">Pikliz in Caribbean Hot Sauce Traditions</a></h3>
+                <p>Haitian pikliz (spicy pickled vegetable relish) has influenced hot sauce and condiment traditions across the Caribbean and diaspora communities. Its preparation methods and flavor profiles appear in variations throughout the region.</p>
+            </article>
+
+            <a href="browse.html" class="view-all">View All Influences →</a>
+        </main>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside>
+            <div class="stats-card">
+                <div class="stats-grid">
+                    <div class="stat-cell">
+                        <div class="stat-num">153</div>
+                        <div class="stat-label">Influences Documented</div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="stat-num">87</div>
+                        <div class="stat-label">Contributors</div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="stat-num">342</div>
+                        <div class="stat-label">Sources Cited</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-card">
+                <h3>Recent News</h3>
+
+                <div class="news-item">
+                    <div class="news-date">Jan 27, 2026</div>
+                    <div class="news-title">New Documentary Explores Haiti's Jazz Contributions</div>
+                    <div class="news-source">Haiti Liberte</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">Jan 25, 2026</div>
+                    <div class="news-title">Smithsonian Exhibition Features Haitian Revolutionary Art</div>
+                    <div class="news-source">The Guardian</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">Jan 23, 2026</div>
+                    <div class="news-title">Researcher Uncovers Haitian Influence on Early New Orleans Architecture</div>
+                    <div class="news-source">NOLA.com</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">Jan 20, 2026</div>
+                    <div class="news-title">Kassav' Members Credit Haitian Rhythms in New Interview</div>
+                    <div class="news-source">Afropop Worldwide</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Rasin Archive — Preserving Haiti's cultural contributions to the world.</p>
+        <p>Built with respect for Haitian culture and community.</p>
+    </footer>
+
+</body>
+</html>
